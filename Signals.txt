@@ -1,0 +1,212 @@
+Angular Reactivity with Signals
+Angular Signal
+https://angular.io/guide/signals
+https://next.angular.io/guide/signals
+https://github.com/angular/angular/discussions/49685
+https://github.com/angular/angular/discussions/49682
+https://github.com/angular/angular/discussions/categories/rfcs
+https://github.com/angular/angular/discussions/49090
+https://github.com/angular/angular/pull/49091
+https://github.com/angular/angular/discussions/49989
+https://www.youtube.com/watch?v=oTFauGIs7s0
+https://www.reddit.com/r/Angular2/comments/12t7107/informal_ama_angular_signals_rfc/
+
+signals represent synchronous values that can change over time. They're not really a good fit for 
+HTTP responses, which are more like async values that resolve at some point (Promises / Observables).
+
+use RxJS where it provides value for you, and use 
+signals to communicate your state to the template
+
+The v16 developer preview of signals doesn't include any support for zoneless change detection. It integrates signals into the current change detection story - they can be used to drive OnPush components as an alternative to the async pipe, for example.
+
+Signal-based components, signal inputs, zoneless change detection, etc. are planned for a future release.
+
+
+
+Signal represents a value (value stream, synchronous)
+
+Observable represents an event (event stream, asynchronous)
+
+Thank you for your excellent AMA.
+You stated:
+"SolidJS is a framework built explicitly around signals."
+Why Angular do not use SolidJS as a library, kind of similar to Angular is using RxJS as a library?
+What is the difference between Angular's signals and SolidJS's signals?
+
+RxJS libraries
+
+Ryan Carniato of SolidJS
+https://dev.to/ryansolid/a-hands-on-introduction-to-fine-grained-reactivity-3ndf
+https://dev.to/this-is-learning/the-evolution-of-signals-in-javascript-8ob
+https://github.com/solidjs/solid-realworld
+
+
+
+Angular Signals implementation for RealWorld.io
+https://github.com/nartc/ng-conduit-signals
+https://ng-conduit-signals.vercel.app/
+
+https://stackblitz.com/github/nartc/ng-conduit-signals?file=README.md&preset=node/
+Error in src/app/ui-home/feed-toggle/feed-toggle.component.ts (3:26)
+
+https://github.com/gothinkster/realworld
+Conduit is a social blogging site (i.e. a Medium.com clone)
+
+
+
+Joshua Morony
+I refactored one of my existing Angular applications that relied heavily on RxJS and observables, to signals.
+https://www.youtube.com/watch?v=p2RJ7xXIRII
+Source code (signals): https://github.com/joshuamorony/quicklist-signals
+Source code (observables): https://github.com/joshuamorony/ionicstart-quicklists
+https://www.youtube.com/watch?v=4FkFmn0LmLI
+
+
+
+Enea Jahollari
+https://stackblitz.com/edit/angular-ednkcj?file=src/main.ts
+
+
+
+https://github.com/viniciusschuelter/playground-angular-signal
+https://playground-angular-signal.netlify.app/
+
+
+
+
+https://github.com/sdras/signals-demo
+https://angular-signals.netlify.app/
+https://www.youtube.com/watch?v=nQ2A30cD3Q8
+
+
+
+https://dev.to/this-is-angular/angular-signals-everything-you-need-to-know-2b7g
+https://www.youtube.com/watch?v=36G-ZFcllkk
+https://blog.angular-university.io/onpush-change-detection-how-it-works/
+https://www.youtube.com/live/HstDoVQeP9g?feature=share&t=3905
+https://dev.to/modderme123/super-charging-fine-grained-reactive-performance-47ph
+https://stackblitz.com/edit/angular-p9t4mr?file=src/main.ts
+https://dev.to/this-is-angular/i-changed-my-mind-angular-needs-a-reactive-primitive-n2g
+https://github.com/angular/angular/tree/main/packages/core/src/signals#settable-signals-signal
+https://github.com/angular/angular/tree/main/packages/core/src/signals
+https://github.com/goetzrobin
+https://dev.to/this-is-learning/making-the-case-for-signals-in-javascript-4c7i
+https://analogjs.org/
+https://angular-three.netlify.app/
+https://twitter.com/pkozlowski_os/status/1629447344755179520?s=20
+
+https://www.angulararchitects.io/aktuelles/angular-signals/
+https://github.com/manfredsteyer/standalone-example-cli
+see branches signal and signal-rxjs-interop
+the signal occurs as a so-called producer.
+If the consumer is the data binding, it can bring the changed values into the component. Changed Components can thus be updated directly.
+a signal always has a value by definition. Therefore, a default value must be passed to the signal function. 
+
+
+
+Deborah Kurata
+angularDeborahKurata
+https://www.freecodecamp.org/news/angular-signals/
+https://stackblitz.com/edit/angular-signals-deborahk
+Manage State with Angular Signals
+https://github.com/DeborahK/Angular-Signals
+https://www.youtube.com/watch?v=04avEeicarQ
+
+
+
+https://github.com/SanderElias/Samples/tree/main/Angular-Signals
+
+
+
+https://twitter.com/thetarnav/status/1625177986197778434
+https://github.com/thetarnav/solid-devtools
+
+
+
+https://itnext.io/angular-v16-signals-everything-old-is-new-again-2bdf159f9ed2
+https://github.com/jsanta/ng16-signals-tests
+nx serve ng16-signals
+https://jsonplaceholder.typicode.com/users
+
+
+https://github.com/brandonroberts/router-signals
+nx.json
+
+OZ
+https://itnext.io/angular-signals-timing-a875659c5a1a
+https://stackblitz.com/edit/angular-signals-timing?devToolsHeight=33&file=src/main.ts
+
+
+
+https://ng-journal.com/blog/2023-04-25-signals-and-the-rxjs-interop/
+https://github.com/HaasStefan/angular-signals-demo
+https://levelup.gitconnected.com/signals-and-the-rxjs-interop-784d20214ca3
+
+
+
+
+https://github.com/timdeschryver/ng-signal-forms
+
+
+
+https://github.com/AhsanAyaz/code-with-ahsan/blob/main/data/blog/angular-signals-taking-reactivity-to-new-heights.mdx
+https://github.com/code-with-ahsan/ng-signals-wishlist
+https://code-with-ahsan.github.io/ng-signals-wishlist/
+
+
+
+https://medium.com/ngconf/handling-user-actions-with-signals-in-angular-ff40bb63e857
+https://github.com/alfredoperez/ng-demos/blob/main/libs/demos/src/lib/demos/ngrx-with-signals/ngrx-with-signals.component.ts#LL53C15-L53C15
+
+
+
+https://newsletter.angularaddicts.com/p/from-ngrx-componentstore-to-signalstore
+https://github.com/gergelyszerovay/component-store-to-signal-store
+The application uses the styling and the public hosted backend from the RealWorld project.
+
+
+
+https://blog.simplified.courses/how-to-prepare-for-angular-signals/
+
+
+https://blog.ninja-squad.com/2023/04/26/angular-signals/
+
+https://github.com/webmasterdevlin/modern-angular-course-2023
+
+
+
+https://codesandbox.io/s/angular-required-signal-inputs-by-default-nig6z1?file=/index.ts
+
+
+
+https://itnext.io/angular-signals-the-future-of-angular-395a69e60062
+
+
+https://stackblitz.com/edit/angular-jafe16?file=src%2Fmain.ts
+
+
+https://levelup.gitconnected.com/signals-in-angular-is-rxjs-doomed-5b5dac574306
+
+
+https://dev.to/angular/make-sure-you-do-this-before-switching-to-signals-27m9
+
+
+
+https://vived.io/mastering-angular-signals-a-10-minute-crash-course-frontend-weekly-vol-132/
+
+
+
+https://angularexperts.io/blog/angular-signals-push-pull
+
+
+
+https://codinghelp.io/building-a-reactive-crypto-application-with-angular-signals/
+
+
+
+https://medium.com/@gauravmukherjee/can-signal-replace-rxjs-in-angular-954d8ba46b61
+
+https://www.youtube.com/watch?v=Uz1vtre1cd0
+
+
+
