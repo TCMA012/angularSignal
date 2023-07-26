@@ -1,0 +1,1302 @@
+Angular signal Tour of Heroes
+Getting Started Angular Reactivity Tour of Heroes
+Getting Started w/Angular Reactivity: Tour of Heroes
+Brandon Roberts
+1:54:52
+Streamed live on Mar 9, 2023
+Let's take a look through everyone's favorite Angular demo application, the Tour of Heroes, but with a fresh look using Signals for Reactivity.
+
+GitHub Repo: 
+https://github.com/brandonroberts/angular-tour-of-heroes-signals
+
+Show Notes
+00:02:21 - Intros && RFCs
+00:08:50 - Live coding
+
+OSS:
+NgRx - https://ngrx.io
+Analog - https://analogjs.org
+
+Transcript
+rocking the the hero devs shirt today
+tour of Heroes
+is a very classic demo application for building with angular
+it's been around probably since the angular 2 angular beta days were out 
+
+run npm start
+and we'll go back to the browser here and we'll bring up localhost 4200
+and this is tour of Heroes now I've already done some a little bit of leg work here in that I've
+converted everything to Standalone components and bootstrapping the application using standalone
+so that we're kind of working with the modern angular stack here
+so and I'll share this repo once the once the stream is over so you can
+and I'll add it to the show notes on YouTube so you can get it there also
+
+is signals going to make code more messy
+
+are we all of the opinion that 
+signals are better Behavior subject plus something
+something CD details
+
+another question was 
+can I ask you
+if indirect is going to apply something like signal selectors or similar I love using it I would like to continue using
+it after ng16 
+
+the first question is
+about our signal is going to make code more messy that depends because
+
+shout out to the 
+RFC GitHub slash
+angular if you haven't checked out the 
+RFC
+
+already for signals let's drop that in the chat here
+this is usually the first thing we go to drop that in the chat also but definitely give that a read
+ about the  pre-rfc there will be an 
+RFC to come so
+forgot about that part I mean the 
+ngrx RFC 
+see you're throwing
+me off but we can give that one a shout out also because
+we do have one coming up for that too that Marco has put together
+and that we just updated today because we had a nice meeting about it and
+discuss some of the things there to try to answer some of these questions that people have in the chat
+ cane signals make your code more messy if you're right if you make messy
+components yes is a signal a better Behavior subject I think it's something different
+altogether and if indirect is going to incorporate signal somehow the answer is
+yes and we're doing that on two fronts 
+one being the indirect signal store
+ RFC that's out there so definitely check that out and
+the other is we're going to integrate some of the existing API ngrx apis in to
+store to integrate with signals so be on the look at we haven't put an 
+RFC out
+for that one the apis that we're going to do there but be on the lookout for that that one too so we definitely want
+to provide some guidance and connections there so 
+definitely check those out now if I've gotten all the I think I've gotten all the 
+rfcs pre-rfcs out of the
+way we can get back to here
+so tour of Heroes it has a few components here
+a few services it has some observables in it it has
+like a type of hair component so it has a little bit of a few common use cases
+that you can use that we use today in angular
+applications so so  we'll just dive right into it
+we'll take one more look at the application here
+and we see I have our 
+dashboard and our heroes and we can edit it here we can
+delete a hero we can go in here and 
+change bombasto to
+bombastos and
+we so I did saved one so basically you can do a lot of the crud here so
+along with the heroes and you get a log of each one of those things
+understand correctly signals will live beside signals async and 
+sync when I
+improve rxjs so we just have one way of reactivity 
+
+ the thing about signals is t
+are 
+only synchronous signals beside rxjs yes 
+
+signals themselves are only
+synchronous so there is 
+no mixing of synchronous and asynchronous rxjs is
+where you can handle more complex asynchronous things and we make it into that as part of this
+exercise but I think you you will be able to get a
+long way with signals but you still have to handle the like the async data fetching and those things on your own
+which isn't much different than today 
+the difference going forward will be
+that you don't have to reach for rxjs to do as many async things so
+ and then of course there'll be 
+libraries for handling the async part of it like  
+ngrx like 
+RXangular
+ blanking 
+ngxs other ones like that so
+every there will be other Solutions out there for incorporating signals into
+more State Management libraries and handling the async part of it so
+ so let's let's take a small slice of
+a service here and this one is pretty simple so we can start here which is the message service
+and this one isn't using signals or observables at all it's just using 
+regular property an array but if we want to have this in the
+future to be hooked up to the signal I don't wanna  if we should
+call it 
+signal change detection system but we want to use signals here so we're going to 
+import the signal and
+we're going to convert this to from messages stream to equal
+a signal of string
+should be in the right there and and that will give us the type for this as being a 
+setable signal of a
+string array so now we have to update the wherever it's being used so we'll 
+update the push
+messages and we'll use the 
+mutate
+function here and there are a few different ones that you can use with a signal one being set
+you can also use update and you can also use 
+mutate if you just
+want to 
+mutate in place so I'm going to use 
+mutate here and I'll say this up front I'm still
+digging through this along with everybody else so if you have definitely have any questions or suggestions then
+we can definitely get into those two brexit I'm curious to see what the
+patterns of signal usages would be so as of now I'm thinking of 
+signals only in components or directives or
+zerbils everywhere else  
+that's a I think it depends on how much you want
+to lean into them I think we can actually put signal we can
+we were talking we were talking this morning 
+Alex Crisco had a good point that we can actually maybe get to a
+point where we can put we can actually use these signals in our
+components without like messing like junking up the components again because
+it's a little easier to do that with rxjs and still get the reactivity but you know a little more
+lightweight there and then it says he loves 
+mutate because we don't have to care about 
+immutability yes that's another thing I think is a plus here also so the 
+mutate will give you the 
+previous
+values and I can use messages again here and just push
+if I can type in here push the message in there and for this one we can use the 
+set
+method here because we're just clobbering whatever is there we don't care what the old value was we're just
+overwriting the new value 
+set versus 
+update versus 
+mutate
+we've had some discussions about this also and I think that
+the skip mutate skips equality check is
+there so keep that in mind also good point we're going to change this one to update
+and update means that we have to return
+a new I'm not sure if I have to do the 
+whole
+spread thing here if I use 
+update but if I do it that way then we don't
+then we may not run into the the ref the equality check there so
+Deborah thanks for coming through if their purpose is for primarily for change detection do t make most sense in the
+component not the service I think it's a good point because if we go
+into our component here and I wonder if the
+setable signal is not assignable to that so we're going to just change that to
+a callable function there so we get that and we'll save
+and we'll come back here and we'll reload our dashboard
+and we can see that I'm not getting I'm not getting log messages here which
+is interesting so let's go back to our messages service
+and let's change let's let's see if mutate will work
+here I'm going to try it anyway to see if it'll give me
+messages.push
+because we're gonna make it work we're gonna put the the stuff in the component we're gonna
+try to put in the service see how all that works
+ so messages component messages 
+ngFor
+see here we here we are again this is one of the things that 
+is going has tripped me up already and could trip me up again because I have messages here
+but I have messages not linked here which will turn return undefined Maybe
+so if I change this to messages now I have messages
+so that is one thing to look out for there so now that we have that let's and
+I did still have 
+mutate 
+here so I'm assuming that worked correctly
+yes and it seems to be updating the list there for that
+it returns a function I think for update I think it should be messages
+update this is so basically an immutable approach
+ it's be 100 sin clear playing with signals and services is a  exploration
+ because we always talk about using like these
+facades in service and components now which I have a message service here but
+I wonder if it'll eliminate the need to have like a facade component facade per
+component like we've traditionally been used to is dndp what's up it's TS strict mode
+enabled yes it is it is enabled I
+this is a vanilla angular V16 project that I just created and I dropped in
+the tour of Heroes and convert it to all Standalone components and everything so
+but I haven't changed anything else so if it's strict out of the box that's what we got here Mike what's up
+how are you thanks for coming through so
+we got our message service here and that is working I think we have all
+the let's go to references here and see if I updated all the places that
+we were using it hero service messages
+ I think we're good there because all the other ones are just reaching into the into the service there
+what's going on speaker buddy I am on the journey I'm taking a tour of signals
+that's the  if that's the way I played it what is the difference between mutate and update someone in the chat
+said that I think it was ciao said that mutate doesn't do the equality
+checks so I'm guessing if you
+were to if you had an object here and you mutated that object and it's not
+going to check whether the whole object is still the same so
+would be helpful to have lots of commits to follow along later that is a good idea
+let's add another tab here and we're going to get add
+and get commit feature convert message service to signals and depending
+on how far I get here I'll try to do that along the way 
+Nico Nicholas what's up will signals improve rendering performance
+and where we can we'll we can use anger when can we use angular
+without signals to answer the both of those questions is yes it will I think it already has
+something already has improved some of the experience for or 
+rendering speed
+in angular itself from one of the some of the PRs that I've been looking at or that the pr that India has been 
+sharing with the community I should say because he's all about it  which one do we want to go to First
+we're on the dashboard so let's see if we can get the top heroes
+for we can get the top heroes and do all
+that using us using signal so if we go into Main
+I think we're on dashboard
+
+will be a way to convert the signal to an observable 
+
+yes there is 
+I'm not
+sure if this I think the pr has landed I'm not sure and I don't want to get too far off
+track but we'll check and see
+we'll go to our good friend Alex and  it has not landed yet
+but there is going to be an 
+interop layer for signals and observables
+and there's that if you want to follow that
+so signal to observable to promise you're playing with fire my friend
+  so hero service let's go into our hero
+service here and we're using the in memory angular
+and 
+memory web API which is one that was invented by or a package invented by 
+Ward
+Bell 
+so we're not actually having to connect to any external apis here
+so we'll get Heroes we'll just get Heroes here and we want to convert this
+to well this is kind of the one of the first questions that I ran into
+is do we convert signals here or do we just return the data
+can we simply  can we simplify this so 
+let's do 
+getHeroesData 
+let's do that and we want to return and sent we're
+going to try to do this without an observable so we'll just use 
+fetch
+and what you use 
+this.heroesUrl
+because that and somebody in the chat feel free to 
+correct me on this but what we'll do here is and I could use
+async await here also but I'm gonna choose the more traditional
+approach for now maybe we can refactor later if we have time so we do return
+response.Json and we'll say this is 
+as Hero
+
+let's see do I have to do it unknown here
+response
+maybe I could put unknown as an array of Heroes
+and so this will give me back a promise of Heroes so if we go in here to
+our dashboard where's my dashboard there we are
+and we change get Heroes to getHeroesData and changes to that then
+and then we'll have to convert all of our class properties to
+signal signal property signal properties I don't
+that sounds like what I'm trying to aim at but I'm not sure so
+signal properties  that'd be it could be a good way
+to signal signal Properties or reactive properties maybe that's a
+better way to put it reactive properties so we get our data Heroes data back and
+then we want to use our set method on the signal from here
+to set the
+data that we display in our template
+hi new to new to the signal signal is developed by the angular team
+signals in angular yes is being developed by the angular team signal
+itself was not developed it was not invented by the angular team it has been
+championed by 
+Ryan carniado who is the creator of 
+solid.js
+which I'm really a fan of actually I'm a fan of Ryan and I'm a fan of solid.js
+if you're looking for some inspirational signals definitely check those outs also he puts out a lot of content about
+signals and
+he puts out does long streams on YouTube so definitely check out his Twitter and channel also
+ but yes
+been working on angular 15 2 project and I'm very surprised how smooth the transition to work with Standalone components hope the same goes for
+signals when delivered  
+I think so like I said we're kind of doing some
+exploring here but yes that 
+Standalone component transition has been very
+smooth and I'm glad it gives me a
+ error here in the template so I'll remember to always put call it as a
+function in the template which I know we've already said we've said before that 
+calling functions in the template
+has been taboo but that has not been the case Ania wrote a blog post about it and
+the team has conver confirmed that that is not you don't get a
+performance here especially with signals there 
+Tech swinging back to older influences
+yes we have to reach back in history in a way
+
+what is your thoughts on kind of signals concept and angular implementation versus 
+quick I'm not familiar with
+quick's implementation but as with most like Frameworks
+everybody is doing theirs even if t have signals in their framework t're
+being done a different way so I'm sure that there's some in quick that optimized for like their renderingModel
+or the way t lazy load and chunk everything together so
+and ain't signals angular are written to integrate well of course with angular change detection and where the team wants
+the wants that to go so
+but yes Let me refresh here
+sure my chat is good  so we got our dashboard here and
+let's see if we're still compiling all well there
+and we'll go back to here and we got
+don't have anything here so maybe I did something wrong duct tape is not valid Json let's go to
+our Network and refresh Heroes can I get API Heroes
+interesting
+I wonder if there is
+something with the why use signals for fetch just
+complicates things no need a reactivity for this use case
+ doesn't this use an Interceptor yes it does and let's see I thought that the
+main.ts here well I registered the in memory web API
+using this so maybe I have to
+do something with the 
+interceptors there and I might have to go to a backup for
+that does fetch work within memory web API it does not Ah that's
+great  so if that does not work let's
+we'll we'll do the we'll do the not nice thing here and go back to two
+promise and let's see what are we gonna I'm going to change this to a promise
+of hero array and what am I getting an error here
+promise of hero undefined undefined is not
+ there we go promise of hero undefined
+and we'll change this back to Heroes possibly undefined I don't want to do
+that so I'm going to tell a lie
+as promise hero
+there we go  so we got that all saved is promises deprecated t're
+right use 
+lastValueFrom 
+
+isn't that an operator
+or do I have to put that on the front 
+lastValueFrom
+
+rxjs  with that made me not have to do this
+anymore even better first value from
+my rxjs is Rusty as you can see
+
+00:42:26
+
+
+
+
+
+
+
+
+
+ hasn't any type filter I saved the thing
+Heroes component  so it's breaking somewhere else Heroes component let's change this to
+then  we're all saved
+and we're back to dashboard Heroes
+we have our dashboard there so good catch
+but what I was getting at is that is that we could get to a point where all this could just be a fetch call and we
+would not have to bring in rxjs for this part of it there's the r and RX stand for Rusty
+Eagle no that one's taken  we can use it though probably last is better
+actually right we're going to go with what works so
+let's I wonder if no because if I use the other one then
+it's gonna it might run into some different issues  we're gonna roll
+with that we're gonna say there are no observables on the outside we may have to keep some in here just for the
+in-memory web API but we'll work with that
+ so we got our dashboard component together and we got Heroes there
+just to make sure this works correctly let's change this to three so only get the top three top two Heroes
+so that works we could also
+use this as we could change this to let's gonna change something real quick
+just so we can see how computers work so let's change that to an internal
+let's keep that one as heroes or we'll change this one to top heroes
+equals computed and then we'll say this one is
+we'll set Heroes there and we'll say compute top heroes is
+Heroes and we'll take off the slice here
+so then in our template here we can go to top heroes
+save that and refresh and now we can see that
+everything is still working correctly so if we have our
+we're gonna do two of them here let's do just so we can see both being
+rendered here Heroes and top heroes so we got our full list here and then
+our computed list of Heroes there so that seems to be working nice and
+well we'll take that one back out and we're back to our top heroes
+HTTP is about to be so weird so used to observables and having retry failure
+or handling them for me Mike you and me are here my friend
+ I and that's a good point this gets into the area of when did you where are
+you going to reach for rxjs and HTTP like it's there it
+works like that today so how could we
+do this with a us do this with signals I could have done
+let's see we're just we're just messing around here I could have done something like this Heroes
+equals signal hero array
+do we get to import right there we go and let this be an empty array
+I could well now because the the dog on
+ the thing isn't gonna work
+the in-memory web API  we're going to
+do something really quickly if I can get this working quickly let's see
+save div 
+Json server
+and maybe we can drop the heroes into the mock Json server
+and get that working let's see heroes or data
+and we'll say 
+Json server
+and I'm gonna go look this up really quickly let's close twitters
+Json server full rest API in 30 zero code in less
+than 30 seconds  we're going to put it to the test
+Json Server create a 
+db.json
+ with some data
+ DB.Json with some data Heroes
+Heroes 
+ Heroes mock Heroes is what I need
+this is probably the part I should have done beforehand here because I wasn't I didn't think that the
+I said I'll remember that Fitch was going to break with the memory web API
+what's up thanks for coming through I am trying to replace
+in-memory web API really quickly with Json server so 
+Json server watchdb
+
+Json let's drop that in here
+and we'll open up another terminal here 
+
+npm run data
+
+localhost 3000 that is not the right port
+ 
+I think it's we'll see if I run to some cors issues but
+npm start 
+
+let's run that back
+and let's go back into our hero service
+let's take this out and
+what am I looking for 
+hero service
+http localhost 3000
+
+so it's just /heroes 
+wh 
+localhost 42 000. 
+get Heroes failed Network
+Where is the where's my heroes call
+not found 
+that's what I thought we did there let's try that again
+heroesUrl yes
+home that's two local three thousand I
+probably have something else running so let's check and see what else we got
+running here  I think I found it
+I only need 
+/heroes  
+
+let's refresh that thing
+next webpack HMR not what I want
+to close some other things
+ running Json server Heroes  so it looks we should be good there
+subscribe no call
+that's what the interceptor yes but I 
+disabled the
+interceptor 
+so I'm just using like straight up HTTP down
+so we should be
+good here let's close that
+unless it installed something that I did not see
+Main 
+in memory web API provide HTTP client
+try to disable cache 
+good call
+not giving me anything there 
+empty cache and heart reload
+let's try that one because there is a 
+/heroes in your
+app yes
+but but it's making the call here 
+collection undefined not found 
+what am I missing 
+Heroes
+ let's go back to here 
+this Hero Zero we're gonna get this sorted out in a second I think
+Json has 
+cors enabled see
+30 seconds and t got me
+cors of course is enabled by default
+that's no fun 
+--no-cors
+ Boolean
+ let's try that again because I know this is riveting TV
+--no-cors 
+
+ let's go back
+there we are heroes  we did it
+see of course 
+cors 
+gets me every time this is a long
+30 seconds you are right Jordan  but I think this will
+be better a little more illustrative of what we're trying to do here get status
+let's just we're just going to shove all this in here get commit
+feature switch dashboard to API
+remove in memory whip API
+ I think we're back we're back on track now so
+this is kind of where I was getting at before where we can like not
+ and look  I should have started this up front this is no knocks against rxjs because I really 
+like arcgis but we're trying to do something a little different here in this app so
+ so we got our heroes and where'd my
+now my login isn't showing up there it is  I thought it had one when I
+I see I deleted the gonna go back here really qwick
+I deleted this part so we're gonna copy that thing
+just so we have a baseline here and we're going to return that
+because we don't have a built-in tap anymore there we go fetched Heroes  now we're back on track I think
+better write a stack over for a question you are right I am
+I was two seconds away from having to jump on the stack Overflow train
+forgive my Alias here but we're just going to save that really quickly so it's all within this change
+ what's we got dashboard and we got our heroes
+what's next are we  we're getting a 
+promise here also
+we got our top heroes we won't do search yet clear Heroes that works
+back  that was interesting
+it nuked my messages all together but I that works 
+let's not get lost in the in the other details of things  so let's go to
+detail /hero hero ID which is our 
+HeroDetailComponent
+
+let's jump in there and I'm guessing in this case it's going
+to be more more of the same  so we're we're using 
+query params
+here so 
+get hero we have our 
+get hero ID
+and so we're going to take delete all those
+changes to a promise why are you using fetch an observable good just easy fire off and update to a
+signal yes it could but that's the thing we want to see
+how far we can get we the tour of Heroes is already using observables so we know
+all that all the mechanics of that works what we want to explore is how far we
+can get with just using 
+web apis and signals
+let's go with that for the pitch so we're going to change this to a fetch
+also because if you think about it the 
+HTTP we're not
+doing any real time we're not listening to progress updates we're not doing any real-time stuff
+there so it's like a one on one and done right
+need some component tests that's right doing all this refactoring
+that's right Jordan if you don't know Cypress desk component
+test I'm going to do the pitch if you don't know Cypress desk component tests and
+you can use it to test your components what I have in the stub out all the things
+ so 
+getHero 
+is a promise of hero
+you made the gist out of me wonder a little Wonder it's Cypress
+just use async await it's better  Ania you're right let's do it we can
+have different examples in different places so 
+getHero
+ and then we got hit get hero here
+good hero yes I know 
+async
+promise of void so we can do await
+and you can say cause hero equals get hero ID with await because
+Ania said so and we're going to reassign our hero here
+so let's go and change this to a signal also which it's interesting that you
+could get t could like 
+migrate you to this like
+t already know all your class properties so t could easily just like write a migration that could be
+like  I heard you like signals so we wrote a migration to
+change all of your change all of your properties to signals
+you're welcome so maybe that'll happen one day that would be interesting
+if the team could pull that off but  so we're going to sit here or there and then here
+we're setting if this hero that's always going to
+be defined actually so this should be if
+if this hero and we're going to 
+call a function here
+ignore signal undefined 
+why isn't it given me
+can I do this and if I no no
+the more you wait in the class longer it takes to see the UI await everything is
+sequential sure
+ so hero ID let's do 
+hero() as hero
+
+so we always remember to call the function and hero undefined but I'm checking
+ let's do this as hero equals this
+that's it we're going to work around the things that get in the way and  if this is going to be
+a common thing but
+that way we're narrowing down we're at least narrowing down the the type there
+and we got our subscriber 
+updateHero 
+and  we could all make this
+we don't want to get into over optimizing here but we can make this an ID one liner there
+and update that
+so let's go back to no property ID does not exist on 
+hero ID as hero we should be good there
+what do I miss I may have broken something somewhere else
+heroed ID
+ you do have to save things there we go dashboard ambasto
+ so we're good there with fetching an individual hero
+for our HeroDetailComponent I think everything else should stay
+the same 
+ngModel 
+that's good there I wonder
+if there's anything we can what happens  nothing changes to
+wait what do we do with ngModel
+because 
+hero.name is what does
+we're not mutating a property anymore
+so
+ngModel
+ so bind to that
+and good call 
+ngModelChange 
+equals
+ 
+so where do we
+ I have to 
+save or 
+updateHero 
+name string 
+this.hero.mutate
+
+what do you want to do here update I'm not sure hero
+
+this.hero.update
+
+ID hero.id and name
+ enter some feature directive yes
+number undefined this should be
+you are undefined as number
+
+ because that should have a value
+ngModelChange 
+equals updateHero
+
+hero event
+value I'm not sure
+anti-model hero name update event value
+and so let's go in here and see let's 
+console.log name
+
+ that's fine what happened to my name
+undefined that's nice let's see
+ngModelChange
+pass the undefined check do signal hero no be sure to handle that null value
+forgot the parentheses in the updateHero method 
+of course I
+did hero
+well this is going to be I'm using update here so 
+this should give me the existing value right
+you should give me whatever whatever the previous value
+was 
+Justin totally get your experimenting and trying different patterns and
+your template see so far are you having a hard time convincing me to switch away from rxjs in a service land  this I'm
+not trying to convince you this is yes exploratory  where am
+I missing here t said I'm 
+missing some parentheses somewhere
+I have print I'm calling hero here right so that in reassigning it as this value
+return hero in update
+make sure I can get the value directly yes this should be 
+a synchronous
+thing would it just be event instead of event.value probably
+
+log event let's see 
+console.log
+name now you can see hi you can see I debug
+things when I get stuck  
+I had the wrong event wrong event handler there
+I didn't want to go to like debugging digging into debug land but
+ngModelChange 
+console log name instead  that's a
+good one also I was just trying to get something on the screen so I could
+move somewhere else  so if I refresh now if I save
+let's see that's probably not saving correctly
+because well that should save something right
+add update 
+where's my
+search Heroes add hero delete updateHero
+put heroesUrl hero
+
+can you just update value or do you need ID and name 
+
+if I were
+using update then I have to do a replace of the entire thing
+ I could do this also and just say like 
+hero.name
+equals name 
+it's possibly undefined yes thank you
+I don't like doing this
+no not assignable to a hero
+is this what you're saying ciao is that let's say this is possibly no
+I'm playing whack-a-mole 
+I'm gonna do it real messy unknown as hero
+so stop barking at me there we go
+no  that's what I put where do I put the null
+here hero
+ but I don't wanna 
+are you saying this
+that's weird are you saying this
+help are you saying do this
+entail typescript that I got it
+like that there we go
+I'm doing what I can here
+ so we have all our save stuff here let's
+go in here and 
+updateHero 
+let's change this one
+let's do 
+async 
+promise
+we don't need to tap anymore
+fetch this.heroesUrl
+I wonder how I have to probably have to pass this 
+method
+PATCH
+ my eslint would never so the update you
+need to update the whole object mutate you can mutate only update one value yes
+both things are supported
+so let's do 
+await 
+here and we'll do 
+body: JSON.stringify(hero)
+
+of course we got our subscribe here let's get rid of that
+change this to 
+async 
+also  I promise avoid no thanks
+es lint 
+await
+ we're simplifying things 
+activate it route
+no observables there 
+bombastos save 
+did not save D localhost Heroes not found
+why not 
+did I stop my
+patch /Heroes  let's see what 
+Json server has to
+say doesn't have to be a put Maybe
+API custom routes don't need any of those get
+patch  so we need heroesUrl
+this is probably in the original code
+but everything is not better on Stream So hero ID 
+let's try that again let's refresh
+bombastos
+Heroes 13. patch
+ we updated  I'm not doing any like 
+refetching or anything so go back to but it should have
+if it went back to the previous page 
+let's refresh here
+why is this still bombasto
+dashboard get Heroes
+fetched Heroes 
+am I on the right screen
+fail to execute great
+ why are you  I'm not gonna fiddle with this too much
+so it's still returning me that but why
+db.json
+watch dbj sign --no-cors 
+if I change that
+ so  my update isn't like posting correctly
+ but we know it's hitting the API so that just could be something I'm
+doing messing up there but we got some Heroes
+we were able to add and delete update those are going to
+be pretty similar  
+messages we did that 
+hero search dashboard hero search is probably the
+the one word going to maybe run into an issue
+Delete hero
+that is hero service
+so where shall we go next 
+
+hero search this probably the one that's gonna be the most
+challenging I think because we have some 
+debounceTime
+distinctUntilChanged
+switchMap 
+ in here 
+and we might not even need to do anything with this
+patch Heroes I patch Heroes instead
+of Heroes ID content types great
+it did not give me an error there 
+hero service updateHero we can do 
+content type headers
+
+headers: {
+    'Content-type': 'application/json'
+}
+
+should that be enough
+to update some Heroes bombastos  look at that refresh 
+
+let's try another one seller reader
+there we go now we're got those all updated there
+so the other ones we can go through and should be able to do these pretty
+quickly also so let's copy
+this and we're going to say 
+Promise 
+why
+are we returning the hero we delete let's do 
+Promise<void>
+
+and we'll change this to 
+async 
+
+Heroes
+let's change this to URL and delete
+don't need any of that and heroes
+and delete hero we don't need any of that
+so if we go in here Heroes let's delete tornado person
+and tornado person's gone 
+upload this stream to YouTube 
+yes the stream is already going
+or the video should already be going on YouTube and I'll
+probably go back and I may do some editing I may just let it run through so
+just so people can see all the the ins and outs of things but this one is
+another one we can convert to a signal and all these are
+ if we're going to call them lightweight values t're just properties
+we haven't gotten into any like complex objects or anything so get Heroes
+  it'll well   that's a valid thing
+sit and we're gonna go through the whole
+async or weight dance here async await
+Heroes equals that
+the inset Heroes is await
+there and and Pinky waving  ad hero we did
+not do anything with that one in a filter we can mutate this one again
+ I'm so used to like 
+I'm like locked up in ngrx land with immutable data and you
+don't have to do that here which is fine just not used to it
+so mutate let's do the 
+mutate after the delete so it actually
+succeeds first add 
+
+heroes.mutate
+ again
+heroes => heroes.push
+
+ of course we've broken some things in our template here
+called 
+parentheses 
+()
+pretty straightforward
+Heroes or maybe not did I break something
+dashboard Heroes
+ 
+would it be night would be nicer to have Heroes and heroes selected in a service
+as signal so you don't have to declare signals in each component
+
+
+that's something you could do
+like we could move  I'm trying to some of this is
+trying to stay true to what 
+we're gonna change this one also promise async
+no tap here all right
+let's do a fetch again and yes I'm doing 
+fetch on purpose
+because heroesUrl
+and we're going to return this
+and we want to use this is going to be a 
+post
+hero equals yes you could definitely stuff
+all this stuff into the service and Abstract it away
+we'll say this is 
+newHero 
+just because that will make that part easier
+and 
+return newHero
+so it's going to be a 
+post body
+JSON.stringify(hero)
+
+add hero I'm missing here property
+fetch this should be a response
+and 
+newHero will be response.json() as Hero or probably unknown
+newHero = response.json() as unknown as Hero;
+
+cannot live without all the rxjs operators 
+ the good part is you can have all the operators you want
+because this does not prevent you from using them
+we're just seeing how far you can get and like I said I'm fumbling through
+some of the things here intentionally
+to get to not get too minimal observable uses
+because the framework still has observable usage today of course but 
+is there a reason to use promises
+instead of observables 
+
+where it's not necessarily using
+promises instead of observing we still have to 
+
+I'm trying to get to a minimal level of
+observables in the app right so we've basically 
+nuked
+all the observables for
+we've nuked all the observables for fetching and updating data
+for the heroes at least and I got one more here search Heroes
+that's probably going to be the the tricky one so 
+let's comment that one out for now
+get hero no 404 where are we using this
+nowhere  
+then maybe that's a something for the tutorial
+ so we got tap still being used somewhere
+where is tap here
+ but I think the search is probably where we're going to get into where we like need to use it so
+Search terms is going to be observable Heroes and that'll probably be where we're going next because it may
+take a little bit of time if we can even do something with that so
+you just made me realize how good rxjs is yes this is not yes this is not
+meant to be an indictment on rxjs because I like rxjs
+ 
+what we want to see is for a let's say you're a new person right you're a new
+developer coming into angular and 
+you don't have any use for
+ flattening operators yet or you just want to do so I'm just doing
+some simple data fetching here right I'm getting an ID I'm fetching a hero I'm updating a hero right all that could be
+synchronous if you're using like a single weight and all that
+and we're not having to deal with race conditions and things
+yet so we're kind of punting
+rxjs down the road until a place where we actually need it which may be here
+ and we'll see if we can use the two things together in that example
+so I think we wired up everything else 
+except for the search
+
+so let's go there next so
+this is where we could have some maybe some 
+rxjs-interop
+ between observables and signals because
+here we're using async pipe we're getting the heroes from our search results
+and we want the heroes to reflect whatever
+the latest search results that come back are so if we do this without the I don't
+know are we doing the   we're doing the whole 
+auto complete here
+or 
+auto complete search here so let's
+let's see if we can do this just a quick and dirty approach
+because we don't have any signals as outputs here because we could do search
+what can we convert to a signal here  that's probably where we'll start 
+Search terms is a subject
+ this could be this could just as well be a 
+signal
+with an empty value and this becomes set
+and so we have our heroes here let's make this
+a signal also
+a signal array of Heroes
+  I'm like coming across but guns here and I'm trying to see
+ say Heroes equals fromObservable the whole shebang the
+bounce and search heroes yes
+I can use which we don't have I don't think from
+observable is available yet from no because it's still in the pr
+so  so let's keep this one
+ we're gonna have what two things here we're gonna have private Heroes which is an observable
+of Heroes or observable hero
+
+heroes$!: Observable<Hero[]>;
+
+and we're gonna do that and then
+Search terms will be a signal
+I don't I don't what I didn't know
+didn't know we can import NG if ng4  without common module yes
+welcome to Standalone components y
+ou can import all the things as
+separate things 
+ so let's go into
+prototype of 
+interop
+
+ I am lifting some
+code live on the internet because I did not copy it in
+advance and I don't even know if I want to this one is a lot more sophisticated
+than what I wanted to do so I'm going to go to
+one of my 
+GitHub repos
+ and I think I dropped one in here
+router-signals
+
+router no Libs signals source
+lib did I put it in here I can't remember
+index  I got no fromObservable in here
+all right I'm gonna go lift one from somewhere somebody sent me a link same with router Outlet router link yes 
+you can import all the things with Standalone components 
+
+so t've updated those
+
+let's go into Stackblitz 
+
+I know I did one there sign in with GitHub yes thank you
+ reading store 
+from a signal this is
+where I put it at index 
+fromObservable that's what I was looking for
+this thing hopefully my prototype here still
+works fromObservable
+.ts yes
+and there was another one or probably one of the other ones the 
+fromSignal one is that one in here from
+signal  there we go
+signal missing Imports
+ fromSignal 
+
+so Search terms let's see
+we'll do the whole fancy utils thing we can say Search terms is from
+ signal
+apart from utils set Search terms
+this Heroes value is rip and never declared but never read that is correct
+
+let's move this up here
+fromSignal
+
+we still have to subscribe to this thing somewhere
+this heroes in John knit
+ maybe we can use the this is another thing we can use
+is the NG or 
+
+onDestroy
+on private on Destroy I know there's some helper functions for this undestroyed
+ I've forgotten what it is already let's see let's go back to the docs
+docs versions next on Destroy
+DestroyRef
+
+ah then I have to use like a just go back to the comments
+I convert that signal itself using fromObservable can you push the repo
+before all the signal stuffs yes I'll push that up today
+what I was getting at was if I want to use the 
+DestroyRef
+ then
+X see I'm stuck here
+which way do I want to go I can subscribe to this and then do
+ this destroy on Destroy
+equals this 
+stop it
+wouldn't subscribe  so where am I going to push the
+Search terms that means I would have to leave the heroes in the template right
+I want to only use what I want to end up with is this
+Heroes
+so  I could do that and
+then I'm doing  
+pipe(tap(heroes => this.heroes.set(heroes)))
+
+
+Heroes this Hero set Heroes
+wouldn't subscribe so where am I going to put this wrap your observable in fromObservable
+fromObservable
+wrap my signal in front observable 
+something like Heroes equals fromObservable eh gross foreign
+   I shouldn't say gross I am
+not used to doing that yet fromObservable this Heroes
+that's nice what what happened
+initial value there we go
+make observables private Heroes public good call serious Search terms use a signal
+ah gross
+well t have to do it that way  zero Heroes gonna sit well we got Heroes
+Heroes here keep search term or subject
+you skip the whole heroes 
+fromSignal
+ no we're doing it 
+we're doing this the hard way Heroes and subscribe
+this should be NG on a knit
+inject the DestroyRef there and clean up that subscription
+in there 
+
+ let's take a step back because I'm changing too many things at
+once what's here this Heroes
+don't need the subscription right nuke that
+ I see Heroes  I see where you're going
+go to the fromObservable implementation here we go
+inject the DestroyRef
+
+destroy = inject(DestroyRef);
+
+and then we're gonna say destroy I should call this something else
+on Destroy
+ 
+sub.unsubscribe 
+
+ there we go I don't want to use take until why do I
+need to yes this is the story
+because I'm making a mess but that's  at least I'm  with that
+Heroes said Heroes does not exist on
+ so let's take this part out
+because that's going to just going to update my heroes value now we have description the moment
+we use it in a template I gotcha subscribe and unsubscribe  I see
+fromSignal Search terms which I'm setting here
+don't need this anymore don't need this anymore
+so we got our Search terms 
+something about this I mean I get why we I probably could
+have kept all this as observables
+no need for class method yes you're right I could do this Search terms
+and drop this in here 
+I you know honestly  when I were like pushing a whole bunch of stuff into the
+template which I'm a little weary of but
+for the sake of this exercise I'm going to roll with it
+
+if we look back we have our Search terms we're going to put some space here just
+so we can see Search terms which we're pushing into from the input box
+we're going to take the Search terms and take that from a signal to an observable
+and remove the DestroyRef 
+we're taking our heroes observable 
+we're taking a fromSignal which is our
+search term so we're pushing into that 
+debounceTime 
+in doing the whole rxjs thing then we come out on the other side and
+we take that observable and push it to Heroes which will give us heroes in our
+template and we can use our search term signal update our search term signal every time
+we push something there I had to use the 
+inject function for the
+hero service you're right we're doing all modern angular here right so
+
+let's throw one of these examples in here also 
+
+heroService = inject(HeroService);
+
+ I didn't go all the way when I was
+converting this to Standalone components I didn't do inject
+all the things so now our component has no our component has no
+methods no life cycle hooks and 
+let's go back to
+our example here 
+constructor-based di will be deprecated
+now  is this a hot take or do you are you do you think this will happen
+for real  
+
+  how I feel about that I think that t should
+change change how we author components 
+don't deprecate constructor-based injection 
+change how we author components 
+
+ let's get that
+I did the search
+did we get some results I probably fired off a bunch of 
+name equals bomb
+
+let's see I probably have to tweak the Json server thing here
+
+GET /posts?title=json-server&author=typicode
+
+that looks correct
+
+to use.accessd properties 
+that should work though let's see
+ 
+let's go back in here search Heroes
+let's try that again think it I wonder if the search will
+result will render now bomb no
+hero's name equals bombs not giving me anything back 
+B
+now this may not be Heroes name equals B
+is to search just not working correctly or I'm doing something wrong
+
+I'm going to go with the latter 
+
+
+
+Full-text search
+
+GET /posts?q=internet
+
+let's try that 
+q equals search term
+it's refresh there 
+we go boom  
+so we got search working 
+
+
+async pipe was marking dirty trigger
+CD net CD wore down by zone now it's gone I can manual CD check to fix it
+well it renders now the it was the search for the
+the search query wasn't doing what I expected it to do but it seems to be
+working now and with that we can change this to
+a fetch and not a
+response 
+
+return fetch(`${this.heroesUrl}?q=${term}`).then(res => {
+    return
+}
+
+I'm just going to Nuke all that stuff
+return response Json
+promise async as unknown
+as hero array if no results
+promise.resolve that part
+and that should be our last bit of observable there
+are the components onPush no t are not this like I said this one is
+stuck pretty close to the the tour of Heroes example
+no more HTTP client HTTP headers those are gone 
+also I could
+have used that in the fetch but let's just
+signals doing CD by definition there's no right notes CD implemented
+
+is it stream recorded yes it is it'll be on YouTube the streamers
+will be on YouTube now and I'll probably just leave it up there in full like it is so that people can go back and
+watch me struggle through all the things which is fine
+
+ because we're gonna like somebody will watch this and somebody will come up
+with some better patterns and 
+
+try to set onPush for this component
+ sure change detection
+onPush  so we're onPush on the search
+component here well this doesn't my spawn
+interesting no more list B wait
+Bo
+ it looks like it's still working sort of
+it seems a little bit behind because I 
+typed in three
+characters m a
+  it seems to be that's probably what Michael was saying
+there 
+so strange detection  you're saying that everything was like a tick behind
+so I'd have to do some manual change detection
+stuff in there but I'm sure that'll get  one off I'm sure that'll get
+cleaned up there so 
+CD is not triggered by the fetch I see
+UI interactions yes that's true I kind of I did go kind of on hard mode
+using going down the fetch route but I wanted to see how far we could get
+because I think we're
+down to  we've got a spec file there this is
+the only place we're using an observable but in the 
+fromObservable
+ of course
+ observable and shareReplay manual CD native promises yes that's
+correct 
+but the
+difference is 
+in bundle size because we're
+down to 55 kilobytes  what we started with 55.02
+ what we started with to before we started shaving everything off
+because now we're down to the observable type and 
+shareReplay 
+operator at least
+that we're using in the app of course like
+angular is still using observables everywhere 
+observable as far as a router and things so
+
+do we lose async pipe with all of the signals 
+I wouldn't say you're losing it but you don't have to use it and that's one of the pluses
+
+well that's one of the decisions or bonuses that comes out of this is you
+don't have to use async pipe you can just pass your property directly to the template
+and call it as a function and it is by you defining it as a signal you make
+it reactive so before we were using the 
+async pipe as
+like the last mile to update for to make an observable connect to the template
+
+now we can see that we have in all our templates we have like a clear line
+of what causes things to change in the template and you 
+don't have to use observables for that you can but you don't have to
+and that's kind of where I wanted to land on this 
+so you can do all your like when we did with the observable search
+ you can do all your observable stuff out here then you want to pass it to the template
+right  
+that is a good point and all this becomes synchronous all this
+becomes 
+synchronous every change to your template become synchronous
+so you could think of this as like 
+async
+pipe and the value wrapped into one thing it handles the updates for you there's
+no subscribing and unsubscribing to worry about 
+we're still building reactive angular
+applications without subscribing so
+that's the goal it's kind of the goal we've been like after for the longest
+  
+now we can still do all of that and have a way to talk to the framework
+Ryan carniado always refers to these as like a language he talks about
+it as a language to talk to the framework so this could be that this would be that
+thing and like I mentioned here I had to go through some h
+to you get to take the observables out
+of the app which you know setting up the mock server and all that was something I didn't account for but I think you can
+see where we're going though 
+
+ this was the memory API thing and I'll commit this and 
+first POC will fix Brian's problem 
+but we went from tour of Heroes
+built on observables and we got all the way through to tour of Heroes with
+like a tiny sliver of observables so the
+and 
+we didn't necessarily need to bring them in for the 
+we could we brought them
+in where we needed them right for the search because like doing this part
+with a signal is gonna be like difficult to say the least
+
+do you have to use onPush change detection with signals no you don't have to but t are going to optimize
+to where you don't have to worry about it  
+once again
+the framework has a way to community we have a way to communicate reactively with the with the framework 
+ 
+I think we expect signals base change detection angular 16 RC
+probably 16
+ 
+thanks to Chao and Ania 
+and Michael Lackey a child from 
+NX narwhal 
+Ania and 
+Michael Lackey from
+pushbase.IO 
+
+
+
+14 Comments
+
+@aram5642
+2 months ago
+This was interesting to see. I think conversion of the ngrx example-app to signals would be even more interesting. Tour of Heroes is quite naive, while @ngrx/example-app has all those abstraction factors (like reducers, effects, selectors) that we were always taught would decouple components from state implementation/technology. Conversion to signals would be a good verification of how practical or theoretical this approach was and how much component code we would have to touch in the end.

@@ -1,0 +1,197 @@
+0:00 / 6:24
+Everything you need to know about Angular signals
+nivek
+Mar 7, 2023  Angular 16
+In this video, we cover everything you have to know about Angular signals. We will learn how to create a signal, set a new value, and how to use update and mutate. Furthermore, we will explore computed signals and learn how to run side effects once a signal changes.
+
+We also discuss why signals are important for the future of Angular. Press that play button and learn everything you need to know about signals.
+
+Twitter: https://twitter.com/kreuzercode
+Blog Angular experts: https://angularexperts.io/blog
+Blog Medium: https://kevinkreuzer.medium.com/
+Instagram: https://www.instagram.com/angular.com...
+Personal website: https://kreuzercode.com
+Angular experts: https://angularexperts.io/
+Featured playlist
+6 videos
+
+
+Transcript
+you probably already heard of English
+signals it's the hardest angular Topic
+at the moment and in this video I want
+to show you everything you need to know
+about signals so far so let's do this
+
+once we set up our application we can
+create a count variable and we can say
+that this is a signal so we simply
+import signal from angular core 
+note
+that the signal always needs an 
+initial
+value so we simply pass 0 as the 
+initial
+value let's now use the signal inside
+our template via 
+string interpolation
+to display the value of count we simply
+have to call it we see that we Now
+display count 0. to successfully
+generated the signal and used it inside
+our template let's now update our signal
+to do so we will add a button with a
+text update and a click Handler our
+click Handler now calls a 
+updateCount
+function
+and inside the 
+updateCount function we
+want to set a new value for our account
+signal so what we can do is we can say
+this.count.set and pass in a new value
+for example four if you now click on the
+update button our account gets updated
+to four this is already pretty nice but
+let's also add another button which we
+call increment
+similar to the update button the
+increment button also calls a callback
+incrementCount
+ in this case
+inside the 
+incrementCount 
+function we
+don't want to set the new value to a
+hard-coded value but we want to
+increment the current signal value
+so what we want to do is this.count
+dot update and update accepts a callback
+with the current value
+inside this callback we increment our
+value and then we are going to return
+our new value when we now click on
+update we see that the count gets set to
+4 and if we now increment we see that we
+successfully increment our signal next I
+want to show you computed signals so
+let's say we also want to display a
+doubleCount so let's copy the count
+line and create a new variable which we
+call 
+doubleCount
+and the doubleCount is a computed
+signal which means this will always be
+recomputed once we change our signal and
+the way this works is we use the
+computed function provided by angular
+and we pass in a callback inside this
+callback we can specify how the signal
+will be computed our doubleCount will
+always be two times the current value of
+our signal so whenever count now gets
+updated
+our doubleCount will be recomputed last
+thing that is missing is to Simply
+display doubleCount inside our template
+now we start with 0 on both values and
+if we now click on update we can see
+that count could set to 4 and double
+count to eight same if we increment we
+see the count is five doubleCount is 10
+and so on the last two signal operations
+I want to show you are 
+effect and 
+mutate
+so let's say we also want to keep a
+history of how those values were
+calculated because currently you can
+increment them but you can also update
+them let's say we have a 
+history which
+is also a signal and as an initial value
+we pass in an empty array to keep a
+track of the history we actually want to
+run an effect whenever our count signal
+changes right I think the best place to
+run this effect is inside a 
+ngOnInit
+lifecycle hook so whenever our signal
+changes we want to update our history
+signal to do so we can use the effect
+function and the effect function accepts
+a callback and inside here we can say
+this.history.mutate 
+because we want
+to mutate it
+again we get a callback which accepts
+the value
+and now we can say value which is just
+an empty array at the beginning right
+because that's the initial value of our
+history signal and we want to push the
+current value of count again to get the
+current value we simply have to call our
+signal
+at this point
+typescript is not happy
+because it says that argument of type
+number is not assignable to parameter of
+type never and that's because we didn't
+type our history signal so we can use
+generics to tell that this is a 
+number[]
+ now whenever our account signal
+Updates this effect will be executed and
+we will mutate the value of our history
+signal the last thing missing is
+displaying the history value inside our
+template since the history value is an
+array we can use 
+ngFor 
+to display it so we
+go 
+let entry of history 
+and again to get
+the value of our signal out we have to
+call it if we now run our application we
+start with account 0 we start with a
+computed signal doubleCount which is
+also zero because two times zero is zero
+and the history which has an initial
+value of 0. so the initial value of
+count already runs the effect for the
+first time
+now if we update we can see that count
+gets set to 4 our computed signal gets
+set to 8 and the history has a new entry
+which is four the same happens when we
+increment
+so that's everything you need to know so
+far about signals so as a quick summary
+to create a signal you can use signal
+you have to pass an initial value to get
+a value out you have to call a signal
+you can use computed signals you can run
+effects and to mutate or update a signal
+you can either use set update or mutate
+okay that looks nice but why don't we
+just use a behavior subject right well
+signals have a couple of advantages over
+Behavior subjects I've personally find
+them easier to teach and learn but most
+importantly they enable us to 
+write
+zoneless applications in the future
+furthermore this is just the beginning
+so this is just a prototype there is
+still an open RFC on the angular side
+I expect that we get input signals
+output signals and also some handy tools
+from observable to observable to convert
+signals to observables or convert
+observables to signals and I think this
+makes it then very very cool to work
+with signals in the future and having
+like a built-in reactivity in the
+angular framework
