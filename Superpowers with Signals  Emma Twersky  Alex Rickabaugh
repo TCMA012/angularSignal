@@ -1,0 +1,646 @@
+Super.powers with Signals | Emma Twersky & Alex Rickabaugh I ng-conf 2023
+ng-conf
+Jun 22, 2023
+You won't want to Zone(js) out during this talk! Join Emma Twersky & Alex Rickabaugh from the Angular Team as they talk about the hottest Angular 16 news: Signals. 
+
+Join the Angular Community: http://www.ng-conf.org/
+Get your ng-conf tickets: https://ti.to/ng-conf
+Follow Us: https://twitter.com/ngconf
+Read More: https://medium.com/ngconf 
+Hear More: http://theangularshow.com 
+
+ng-conf is a multi-day Angular conference focused on delivering the highest quality training in the Angular JavaScript framework. Developers from across the globe converge on Salt Lake City, UT every year to attend talks and workshops by the Angular team and community experts.
+
+welcome to super.powers with signals my
+name is Emma and my favorite animal
+is a shrimp and I'm joined by the
+illustrious Alex rickabaugh and we are
+Engineers on the angular team and we are
+so excited to be talking about signals
+now we had a little bit of a problem
+ because we had like 250 slides
+prepared for you all about signals
+and then Deborah gave her talk this
+morning
+and she explained it so well that M and
+I were just looking at each other like
+we can't follow this we have to just so
+we deleted all our slides
+and so we have four now including the
+title
+  so we're studying the record for the
+shortest talk ever with our first
+slide 
+but we're gonna use the word signals
+on every side and so instead we want
+to talk about what signals are by coding
+with them right I think we've seen
+some really great examples in the
+keynote about why the team introduced
+them and then Deborah did a really
+great job of walking through those three
+Primitives within the API that's
+public facing and so we want to dig into
+what it actually looks like as an
+engineer to start building with signals
+and some of the decision making you go
+through in architecting a new app
+interacting with those apis so Alex
+let's build an app  and what are we
+building so being that this is a
+superhero themed conference we're going
+to build a 
+superhero character generator
+
+so we have our kind of scaffolded
+application here and we have a 
+
+superhero card on the right and the 
+editor on the
+left as you enter things in the text box
+and 
+assign character points it should
+update the card but that doesn't work
+we just got this wireframe back from
+the designer and it's like completely
+static
+so there's clearly an issue here
+which is like if I actually want to
+create a new superhero card and download
+this and create Alex the hero
+that's not working right now and that's
+because this is all static generated and
+so if I look in my code
+and I full screen it oh we're gonna do a
+bunch of live coding and hopefully it's
+gonna go fantastic
+  live coding always goes
+perfect we're each other's pair
+programmers today that's my co-pilot a
+Marco pilot
+
+ng g s superhero
+
+
+I don't care about CSS I wrote this all
+in advance
+and so  like Alex said we have
+two main components we have our
+character sheet
+which  full screening is  so
+we have our character sheet which is
+going to be that like card with all
+of the information we're displaying and
+then we have our edit hero component and
+edit hero is allowing us to edit the
+hero and right now that's all statically
+rendered and we're just hard coding a
+bunch of data and so the first thing I
+want to do is something that Deborah
+pointed out right from the start which
+is storing the signals or data in our
+application in a service so I'm going to
+create a new service and I'm going to
+call it 
+superhero service
+and there we go I have a new service and
+that's where I'm going to store all of
+the data that goes across those two
+components
+and right from the start
+I noticed that I have a 
+name
+ and a
+backstory
+
+ and those are pretty obvious
+in our
+edit hero component that those are
+things we want to edit directly so I
+want to be able to type in a new
+backstory right now it's a villain
+clearly Alex is a hero
+and so those are things I want to
+store here so I'm going to create a hero
+and I'm going probably like
+yep sorry I'm gonna do a name that's my
+co-pilot there and for now this is
+all about me so we can make it Emma
+  and then I have a backstory
+and these are signals and once I import
+once I type something and then I import
+these obviously I need to actually
+update the import and I have my signals
+to start with and again within my
+service I have this data that I want to
+share across the application and
+obviously if I went back to the
+application Nothing's Gonna Change
+because I haven't actually used this
+service anywhere but I may as well save
+it
+and so the first thing I want to do is
+actually go into my character sheet and
+show that information
+and so that information is displayed in
+two places and first I want to inject
+that data and so I'm going to inject a
+hero with my trusty inject function my
+favorite feature of version 15.  and
+if I inject my 
+superhero service I have
+something that I can access there and so
+within my hero
+again I have this name and right now
+it's hard coded and it's just all caps
+in its name and I can actually go in and
+just 
+unwrap my name
+signal from my hero service
+and if I go back I can see that I'm now
+showing Alex
+  and I'm gonna do something really
+similar
+and where I'm currently hard coding my
+villain backstory
+I'm just going to 
+unwrap my 
+hero.
+backstory and I really liked Deborah's
+  sort of like mental model earlier
+where if I saved this obviously it's
+just going to show like a function and
+that's really weird for users because I
+need to unbox the signal data we will
+have a compiler Check Yes and that's
+part of developer preview right and then
+the other part of this application is
+again I want to be able to update it
+right the reason I chose this granular
+level of what is a signal is that I know
+that I want to actually be able to write
+to these values so I have an input and a
+text area that right now again are
+hard-coded and if I inject my hero in to
+this
+then as long as I can access
+my superhero service here I can do the
+exact same thing right which is instead
+of having a value bound to a string I
+can bind directly to my hero. name
+signal
+and then obviously I also want to be
+able to update that so I believe input
+has a well-named input event
+and if I on input want to update that
+then I'm going to do the whole reason
+that this is a signal to begin with
+right I'm going to do hero
+dot name. set I'm going to actually
+set the new value of that hero with I
+believe we called it name so I'm just
+going to use my template information of
+name.value
+and I'm going to do something really
+similar with backstory while I'm here
+which is again obviously hard-coded data
+terrible so I'm going to unwrap that
+information from my service and I'm
+going to go into my hero backstory
+and unwrap that information and do the
+exact same thing with that input event
+right so like
+I have some information my text area and
+every time I change just the information
+in that text area I want to be able to
+update that data
+and so I'm going to go into my hero oops
+backstory
+and I'm going to set it again with my
+information which is again that
+backstory
+dot value nope  nice cool and if I
+test this now what's a name from the
+audience
+I heard Danny Maybe was that a real name
+that might not be your name but and
+clearly you're a hero and so clearly I
+can see now Danny is a card and you have
+a hero backstory
+ cool awesome so two easy signals
+
+but there's some other information on
+this card that might make a little bit
+more sense for why we're making this
+reactive application  I think we
+need to get Danny some super.powers I
+think we do
+so every you know superhero from
+comic books that I've read their name
+kind of gives away what some of their
+.powers are going to be right like
+Aquaman you can breathe underwater and
+swim really well
+so we're going to use the name of our
+superhero to determine what .powers they
+have and we have a set of .powers that we
+can choose from they might be generated
+by AI they might be random
+
+but we're going to base it off of the
+name and so in the superhero service
+here I'm going to import a function that
+I wrote before
+somewhere
+powers = computed(() => calculatePowersByName(this.name());
+
+powers is calculate .powers  vs
+code is too smart for me
+based on the value of the name and if
+you remember from Deborah's talk this is
+a little bit like the Z equals X Plus y
+right we are doing this calculation once
+based on the initial value of the name
+when this com like service gets created
+and it's not going to update over time
+so to tell angular that every time the
+name changes it should actually
+recalculate the .powers we can use
+computed
+so we'll make this a computed signal
+that takes its value from the .powers of
+the given name and we go ahead and
+import that
+and then in our character sheet
+component I think we have a place here
+where the .powers are iterated over and
+they're just hard coded right now
+  and so all we have to do is bind this
+to our hero..powers
+and that should be enough angular now
+knows that the .powers need to be in sync
+with the name and to update them
+whenever the name changes so we can go
+to Danny here and Danny has perfect
+spelling
+and always has signal on his cell phone
+wow I'm a little bit jealous
+ awesome
+so that is our .powers and the other
+kind of feature of this card as you can
+see are these character points or
+metrics that we have so we have metrics
+for angularness nerdiness and
+zonelessness
+and they're displayed with these little
+circles here and we have this metric
+editor component that has kind of the up
+and down buttons and you notice I can
+kind of spam this infinitely here
+so let's look  oh I was
+everyone here is a 24 out of 20.
+  100.
+so let's hook these up
+and because they're data that I can
+change and update directly I'm going to
+make some signals for them
+so going into our
+superhero service here
+I'm just going to create a plain
+object called 
+metrics
+
+ and we'll have a
+signal for each metric individually and
+I'm choosing to do this because I want
+to be able to pass the signal around to
+the metric Editor to allow it to update
+a specific metric
+so we'll have a 
+signal for angular
+angularness zero nerdiness
+is a signal and zoneless is another
+signal that's very fitting
+cool so we have metrics here one of my
+super.powers is not forgetting semicolons
+let's hook these up in our superhero
+card
+so in our character sheet component you
+can see that we're doing this kind of
+trick here of creating an 
+array
+ with a
+bunch of values to ng4 a certain number
+of rows you might imagine if there was a
+new control flow syntax it might support
+something like iterating over a range of
+numbers but we don't have that quite yet
+so we're going to use this trick to
+create a certain number of rows for that
+we need an 
+array
+ of a certain size for
+every one of our metrics so let's go
+ahead and do that and we're going to use
+more computeds
+so for angularness we have a computed
+that is a new array of a given length
+and the length here is going to be our
+angularness metric
+and we're going to cheat and copy this a
+couple times and we'll use the same
+trick for nerdiness and we'll use the
+same trick for zoneless
+and then we can go and update these
+arrays here
+so we have angularness
+we have nerdiness
+kind of replacing these predefined rows
+of zeros and we have Zone lists here
+and that should be enough to make these
+all go away because now we're iterating
+over our zero length arrays
+so let's hook up this 
+metric editor
+
+let's take a look at that
+so our 
+metric editor component
+ has the
+down button the up button and is
+displaying the current value of the
+metric and we can see that right now
+this is kind of local state in the
+metric editor component
+ it's not tied to
+any of our application state
+so we can fix that
+we're going to make the metric that
+we're going to 
+update and input
+and I'm actually going to make it a
+WritableSignal
+
+ of the input because I
+want to be able to 
+update this thing
+whenever it changes
+and I'm going to go ahead and use the
+fancy new compiler required inputs
+feature here because we need this Editor
+to have a metric
+and I need to make a few fixes here so
+it's now a metric is now a signal so we
+want to read it in places but also
+because it's a 
+WritableSignal
+
+ we get to
+update it when we want
+so we can call metric.update
+we get the current value and we want to
+return the current value plus our
+increment
+and
+you can see here that by we fixed all
+the errors in this component but our
+edit hero component has errors
+because we made the metric a required
+input now we get a compiler warning that
+like hey you need to provide an input
+for this component to work
+so we're going to pass in our
+hero.metrix. angular for angularness
+we're going to do
+hero metrics nerdiness
+and we'll do herometric zoneless metric
+perfect spelling zero clearly your
+superpower indeed
+so let's see if this works
+so now as we add kind of angularness
+points we see our ng4 is updating
+because we're doing that computed and
+getting a new array every single time
+but I can still kind of spam these
+things off the page and completely
+destroy Emma's beautiful CSS
+right
+I planted on 42 again I keep doing that
+um
+so we need to introduce some limit to
+fix that
+so to have this limit we need to
+understand how many points we've
+accumulated right
+so we probably need another computed
+totalPoints
+
+ is a computed of the sof
+these things so hero metrics
+angular here this hero metrics
+nerdiness this hero metrics zonelessness
+and we probably want the inverse of
+this as well because we need to know
+when we've run out of points to give so
+we need 
+remainingPoints
+
+is a computed
+that's going to take our constant metric
+limit here and we'll subtract off the
+totalPoints
+
+so we can kind of use derivation of
+these values and chain them together to
+get the state to compute the state that
+we want to show from the state that
+we're storing in our service
+and so in the metric editor I'm going to
+add a new input here
+which is called like 
+upEnabled
+
+ there's
+a Boolean and we'll initialize it to
+true
+and then we can disable the up button
+when the up is not enabled
+and that allows our edit hero component
+now to say we want to disable
+up when 
+remainingPoints
+
+is zero
+and so we can kind of copy paste this
+and then why it adds that extra
+brace there but we can paste that in
+and now we should be able to see that
+oops I think I have a logic bug there
+up is enabled when it's greater than
+zero correct
+there we go
+so now when we hit the limit of 20
+20 out of 20.  
+quite a bit of
+angularness
+that's Emma for you
+ she has full points and we can't
+go any further so we have a couple other
+parts of our UI that we kind of want to
+fix up here there's this indicator of
+how many points you have left we only
+want to show that if remainingPoints is
+greater than zero and then we want to
+show the actual 
+remainingPoints value
+here
+and then this is kind of the else case
+if we had Elson control flow
+so remainingPoints equals zero
+I had an idea about this this morning
+ so now our we can go kind of
+nerdiness and some zonelessness
+and we get this all character points
+have been assigned  HttpClient I
+think that's our application
+so let's go back to our fourth and
+final slide
+tacos not signals
+
+ I think we're equally really
+excited about signals and in a little
+under 15 minutes we wrote I think like
+seven signals and 20 compute or
+whatever that was  
+you compute that we
+
+and what it looks like to Architects and
+think about how you would build an
+application and in doing so besides
+definitely wanting that control flow
+sooner rather than later we sort of
+thought of 
+three overarching themes of
+things we thought about and you heard us
+talk through as we were making decisions
+in our application
+and the first one we touched on and I
+mentioned as we were building was
+granularity
+
+ right so we chose a very
+fine-grained approach of reactivity
+where within our hero service we were
+making a lot of individual signals both
+writable and read-only with computed
+based on things that we knew we wanted
+to update but we could have done that a
+completely different way right Deborah's
+talk earlier talks about cases where
+maybe the entire hero is a single signal
+that we're updating a really great
+example of that is if you're fetching
+data from a server maybe anytime you're
+doing that fetch call with 
+HttpClient
+that's a good time to wrap the entire
+thing in a signal so really being
+fine-grained and intentional about the
+granularity right  and that I think
+you mentioned that you know we have
+kind of different parts of the card here
+that are updating when different things
+change so the name and the .powers are
+linked together when the name changes we
+update the .powers and so it kind of
+makes sense that like those might be be
+tracked separately but the metrics at
+the bottom don't need to update when the
+name changes so by splitting our state
+out across multiple signals we're able
+to kind of Leverage kind of upcoming
+improvements to change detection and you
+know per view or per component change
+detection and get some performance
+benefits there probably not important
+for your one page application but as you
+scale up that could be very good let's
+see how that could grow  
+
+HttpClient
+and the reason the signals were in the
+keynote twice it's the feature so nice
+we put it in twice is that it is
+developer experience right like Alex and
+I had an easy time coding this in 15
+minutes but we also
+saw performance benefits where on a
+component level change detection cycle
+being more granular and fine-grained and
+intentional could really help the
+performance of a larger application as
+it scales
+and the next thing we saw was 
+Derivation
+ 
+which is really the 
+computed
+signals
+Jeremy mentioned that like they hit
+really nice
+
+computed is just a tool in your tool
+belt that you find yourself reaching for
+more and more because a small part of
+your state is state that you want to
+update and a lot of things in the UI are
+derived from that state so using
+computed makes it really convenient to
+do that and like we can do things like
+calculate the superhero .powers which
+might be a more expensive operation of
+caching the name or calling some AI
+service to do it for us but we don't
+have to worry because computed is going
+to 
+memoize
+ that it's only going to rerun
+that computation whenever the name
+changes
+and the last point on our list that we
+wanted to talk about was 
+Ownership
+
+ where
+we put the different signals in the
+application  HttpClient so we
+created a ton of computers right way
+more computers than signals based on how
+we're updating things but you also saw
+that the core data that related to our
+hero that we're we were using across
+different components we put in a 
+service
+
+right we intentionally were granular
+about things that we wanted to access
+from different places in our application
+but something like that edit hero
+component owned a lot of its own
+component logic in computed that was
+just related to it right like no other
+components needed to know how many
+points were remaining that wasn't
+important to how we were showing
+information on the card and so we were
+more fine-grained also about the
+ownership where components owned the
+computed that were most related to their
+component and template logic
+I believe we deleted our
+slides earlier so we don't have a thank
+you slide but thank you so much for
+live coding with us and talking through
+signals and we're so excited to see what
+you all build with signals in the future
+

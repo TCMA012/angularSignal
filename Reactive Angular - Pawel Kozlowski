@@ -1,0 +1,47 @@
+Reactive Angular. At its core. - Pawel Kozlowski - NGBE 2023
+
+Signal = value +
+         change notification
+         (delivered synchronously)
+
+Value changing over time.
+Change notification.
+
+
+
+console.log(counter());
+
+counter.set(1);
+
+counter.update(c => c + 2);
+
+//sugar, equivalent of
+counter.set(counter.get() + 2);
+
+
+
+
+Computed = declarative derived state +
+           dependency tracking
+
+Derive new value when one of the dependent signals change
+
+
+
+const counter = signal(0);
+
+const isEven = computed(() => counter() % 2 === 0);
+
+color = computed(() => (isEven() ? 'red' : 'blue'));
+
+
+- router params
+- form validation status
+
+
+
+- Push based, synchronous reactive
+
+- A signal always has a value
+
+- Readings signals has no side effects

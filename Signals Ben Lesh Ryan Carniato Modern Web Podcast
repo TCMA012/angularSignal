@@ -1,0 +1,822 @@
+Signals Ben Lesh & Ryan Carniato Modern Web Podcast
+https://www.youtube.com/watch?v=cPVbfiAEbac&list=PL-G5r6j4GptFBmxZGbtqT_1mb_sUgCs4T
+0:02 / 52:53
+What's All the Hype Around Signals? ft. Ben Lesh & Ryan Carniato | Modern Web Podcast
+This Dot Media
+11.9K subscribers
+462 views  5 days ago  Modern.Web Podcast
+In this episode, Rob Ocel is joined by Ben Lesh (RxJS Core Team Lead) and Ryan Carniato (Principal Engineer at Netlify, Creator of SolidJS) to discuss Signals. They talk about what Signal are, why they're suddenly s …
+1 Comment
+albert kao
+Add a comment...
+@hansschenker
+@hansschenker
+4 days ago
+RxJs Operators make what the big value of RxJs is. Observables are just the source and you can make any Datasource into an Observable. Where you gain value from using RxJs is with the possibilty to transform data with operators. RxJs Dataflow programming with thelp of Operators!
+
+Transcript
+foreign
+to the modern web podcast I'm your host Rob ocell I'm an architect at this.labs
+today we're very excited to be sitting down and talking about signals with Ryan carniato and Ben lash 
+Ryan is a
+principal engineer at netlify the creator of solid.js and some may even say the CEO signals 
+Ben less you might
+know him as the rxjs core team lead and as some might say the CEO of observables Ben Ryan how you doing
+pretty good great we're having a true c-level discussion today on signals and observables so I'll
+pass it off to you I mean Ben I know this was a a passion of yours to have this conversation so once you get us
+started on why we're talking about signals today  because they're the worst no they're not the worst actually
+they're fine but there's a lot of people that are talking about them right now which is
+like there's this new especially in the angular world they're they're super new to the angular world and it's like
+they're they're oh we're gonna compare these things to observables and they're different use cases and
+sometimes people leverage observables to do similar things because they're primitive and you can do that with
+Primitives but they're just different use cases and I just wanted to talk about it because
+it's funny to me I've seen this exact same type around for
+decades at least a decade probably two decades
+ and they're not they're super not new but
+I just wanted to talk about them and Ryan is the guy to talk about them with what do you think Ryan  no I mean
+you're completely on on that this is not a new idea at all and I the
+way it's so funny to me the way this has kind of come back around again because  when someone's
+doing something and you have the  people  who are old let's say that are  stuck on
+their technology and they don't move off of it and everyone's oh they're they're stuck in the past
+ that was me with these signal patterns there's Knockout JS 
+ popularized basically these these things in JavaScript  as you
+said how long was that 13 years ago or something at least  and I was just the guy still doing that
+when everyone else kind of moved on to the virtual Dom and react and stuff so it  I honestly just
+didn't think people would think much about it but I just continued on that path and 
+tried to modernize things and then  that's where solid.js came in and then it's been a crazy last six
+months or something because suddenly  I don't know what it is maybe some something in the air you
+know something in the water where  people are have been wanting to try different models 
+maybe differentiate themselves from react because reacts changing too at this point and next thing 
+everybody's talking about adopting this pattern and as you said a lot of people have lost the connection to where
+it came from   it's and I remember let's see
+2014-ish or so working at Netflix maybe it's 2015. Yehuda cats who is he
+was on the Ember core team and Ember had the same exact type too where they had computed
+properties and they had I mean it wasn't identical but it's the same principle where you get notified
+something's changed and then you pull the computed values through um
+he had a proposal around adding a type this to JavaScript back then
+and it fell flat I don't know why years ago and here we are again in like
+there's a what angular so if angular adds it I feel the only framework and people get
+angry when you call it a framework the only framework that doesn't have this built in would be react at this point because solid let's see views
+got something signals react has it  pre-act edit svelte
+has signals which interestingly those felt signals are the ones with the most interop with observables
+ so consequently I those ones the best because Interop not necessarily because I observables but
+  it's literally everywhere  but the but the most
+popular thing that everyone's everyone's stuck on  it's interesting  I mean and
+ Quick's another one the compiler for Marco is also very felt so it's like yes literally everywhere
+ now except react  I mean  it's one of those kind of funny
+things because signals are a very mechanical thing  
+like an event emitter or a stream or something like they're a tool that could be used in
+many sorts of ways and it just never really fell into say reacts model
+ but interesting enough the problem signals  solve so
+to speak are in the same realm that you find at the core of a lot of UI Frameworks because they are a tool for
+synchronization they're not about  data propagation or in terms of
+like transforms and async they're about can I take this state and make sure
+that the 
+display of that state is perfectly consistent at all times so 
+in a lot of ways it's a different
+model for the view equals function of State 
+
+it's a different way of solving that problem and that's that's
+their strength and that's what what they're there for and I guess it's interesting because
+it just comes out at a very different approach because it's not about
+ re-rendering the world or throwing it away it's a 
+retained mode if you from a lot of Graphics
+kind of mentality where you have something you set up and then that thing just stays there it persists and you
+just have to make sure that it's 
+always in sync so as I said it's a different take
+ considerably from react which makes sense why we haven't seen that adoption
+there  there's for me the thing that
+gets me is The Primitives side of it right so I tend to see the print one thing that observables are not
+good at because 
+observables are very primitive and I said people 
+try to use it for State Management and 
+they're generally they're good in a lot of cases because they're very flexible but um
+one of the problems that people run into is you get 
+glitching right where you have like
+someone will do a 
+combineLatest
+ so I have two observables and they 
+combine those two things into one other
+output so A and B and they're going to add them or something and 
+the problem becomes with observable is that 
+if you
+when you push on a it updates the output and then you push on B and it updates the output so 
+in one tick you've got 
+two
+updates
+ which then means 
+probably two renders 
+if you're just building everything off of that
+ and so you need that aspect of sort of scheduling in the but like
+observables are very flexible because they're 
+only push 
+you don't have to worry about the pull side of it
+ and you have the other side where you've got iterables 
+iterables don't do event notifications so they're
+not particularly great for any kind of interactivity sort of reactivity
+and then you get what we have built into the 
+browser which is async iterable
+and async iterable it's funny to say this because it's everyone's so excited about them when
+they came out I'm excited about them in a lot of ways 
+the problem with async iterable is they are pulled and push
+and their 
+push mechanism is non-cancelable so that makes them a little bit 
+hard to deal with in advanced
+cases and so you've got this
+they're not necessarily going to be glitch free either because you can say oh I want to do this
+and you might you say pull this and pull this and then those 
+two things might arrive but back to back and you
+still haven't solved the problem that signals solve 
+which is 
+push then pull
+ as
+opposed to 
+pull the push 
+so with signals it's just 
+
+I get a signal that something's changed so it's a
+notification of theoretically you would notify with void right nothing and then 
+you pull the value so it's
+thick the opposite and over all this time I'd say
+signals are probably the least discussed as far as those sorts of it's
+slightly more obviously it's 
+more complicated type than 
+a pure push or 
+a pure pull but like
+it's not a really hard concept and then people get into this crazy thing 
+it's got a 
+dependency graph
+and it's  
+if you have a function that closes over the calling of other functions that
+inherently builds dependency graph 
+it's not magic 
+but there's 
+some fancy things some fancy tricks that these Frameworks are doing now 
+I don't know if solid does this or not 
+where they use some 
+Global State temporarily to know what producer and consumer relationship to
+wire up when they're figuring out their dependency graphs 
+but that's the other thing that signals do that make them
+interesting is this 
+if I notify then I know who else to notify and
+then they know who else to notify
+them and at the end we schedule something and 
+all the notified things pull their value here
+    
+it is based off a global state of some
+sort because basically I often it's not exactly this but it explains it to people there's almost
+like an 
+execution runtime stack that's handled at a global level where when
+some reactive computation runs something an 
+effect or something it 
+gets pushed on the stack and 
+then any signal
+that gets read while that's running we'll see the top of the stack and be  
+this is
+where the subscription has to happen and that is a bit much because we're talking about 
+implicit
+ subscriptions but the power of that is it makes it really good for these kind of 
+synchronization
+distributed 
+templating style problems right because these 
+dependencies the wiring
+can change very rapidly based on a condition or or something and  there's 
+less
+Plumbing so to speak in order to just 
+connect those dots  a 
+spreadsheet
+  that's
+obviously comparison people make right you have some 
+calculation cells it's very easy to just like
+write out all these equations  and have them 
+disperse throughout your app I think that's the biggest thing and
+difference there in terms of that aspect because you were talking about  when you have this 
+push-based system you might get like
+multiple  hits  coming in when you do these changes  you
+can even happen 
+if you Fork something and then suddenly  you're making two the thing is all
+of this kind of 
+pushes you towards 
+recombining it again at the end  and that 
+recombination
+ is why a lot of times I've seen 
+RX be accompanied by a
+dirty checking system or a 
+virtual Dom
+ when it comes to the actual like
+synchronization part 
+because then it's  let's have 
+all these changes kind of funnel into one
+place and then 
+push it out where's because signals are kind of  what a dub is
+fine-grained reactivity you kind of are more situated in the sense that
+you're building towards having 
+multiple subscriptions 
+not one big subscription at the end but multiple
+ones you can obviously do this with 
+RX too but that's the natural state of things and it kind of
+it's because of these very strict limitations right we solved the 
+diamond problem the 
+topological sorting
+because everything is synchronous
+ right everything there's a lot of things that we kind of assume don't
+happen or don't build towards right which is why 
+RX and signals still very much have
+their own place you talked a bit earlier about svelte and how easy it is because it's felt
+ part of the reason it's actually easy as fault I think is because their 
+whole component is still that 
+scope like
+they still kind of 
+rerun components so if you want to say 
+I've got something to 
+subscribe to you just go  
+$ bang on your
+store or your 
+Rx thing and then he goes  
+this component subscribes done it's a little bit trickier or the
+interrupt with fine grain because we don't have that component the only thing that actually updates is the one
+particular thing so what we're left with is I actually we have helpers from kind of inspired by
+  observable from kind of idea where you can kind of go back and forth or you can go  
+can I
+get a signal from an observable or 
+can I get in a  
+can I go
+the opposite direction too and it works and it 
+lets each handle
+each their own domain in the best way that they possibly can 
+but it is a little bit more  because
+like now you're 
+piping these two things together and there is a slight
+difference in the semantic meaning of it but I mean I guess this happens a
+bit in RX anyways a signal for RX folks out there is basically a
+BehaviorSubject
+  plus a bunch of 
+guarantees because of the
+synchronous  piece and these 
+Auto tracking kind of setups but 
+where it fits in is  
+
+it's not a stream 
+it's a value 
+there's always a value Associated so 
+mapping observable to signal is 
+mapping observable to
+BehaviorSubject 
+ there is a change in the meaning of it when you
+kind of put them together 
+I just want to 
+point out that these things do have their natural place the way they can sew each other together
+ it's just there's a reason why they're based on their design they have a tendency to go one way rather than the
+other way   it's interesting we see stuff 
+preact bringing signals into a V Dom but
+you and I guess you did too but classically 
+that wasn't where things started from not with knockout
+not even with view one  it was because 
+signals were just a
+synchronization event system where you're 
+no vdom 
+I'm just going to run everything granularly that was a
+mess in its own there's a reason we had to take eight ten years to get back here again  but
+ these systems do kind of lend to certain patterns just because of
+the way they the kind of the semantics of how they're designed 
+
+I think that the 
+ideal way to use 
+observables to update a view really would be
+granular 
+I don't really the whole let's re-render the entire world
+and then dip it and then decide what to update when  I'm a developer that's I know that that's the 
+Dom
+element that I want to update and I know the 
+exact property and if I have this 
+observable that's going to go off every
+time I want to 
+update it I could just update it and then subscribe now where that falls on its face though is
+ you don't have as much control over when things are updating right you've got this situation where you're
+like  every time this mouse movement and then this other thing and whatever and then you've got either 
+glitching or 
+you're not
+controlling it quite as tightly where depending on the signal implementation 
+
+the signal like
+it's basically got an observable of I said an observable void that's this has done something  
+I've somebody set this Source signal 
+therefore I need to notify everyone that
+is 
+subscribed to this thing that this has 
+changed and as I 
+notify that really
+what it's going to do is 
+schedule something to then later on 
+pull the values through and the values can
+cache 
+there's a lot of different implementations of these things because it's more advanced 
+it's not a super primitive thing
+like I said an iterable or observable is depending on the implementation it's going to do different things but at
+the end of the day the goal is 
+how can I most efficiently get these values to the actual thing that needs to be
+updated and 
+update that directly I think that the one of the differences that's come through since
+even 
+Ember and 
+knockout though is the whole idea that
+ the Frameworks are now now have a 
+build step and can recognize where in this 
+Dom thing that I need to
+update there's some so there's some DX improvements there as far as 
+getting the signal to the 
+actual fine grain update that you wanted to wanted it to be    
+that was my Journey part because that that was the piece you write signals haven't in a lot of ways are
+kind of similar I feel  
+mobx
+ for me was maybe some early
+view was around the time that we really made the jump on the signal side and realized  we 
+shouldn't just be pure push
+because the 
+earliest signals were actually completely pushed as well 
+that's when we started changing and realizing what the patterns
+were but at the same time the 
+vdom
+ came out this the Solutions in  signal
+land so to speak were much clunkier 
+
+knockout used to you'd have 
+your bindings all in your HTML and so you'd actually  
+realize the Dom elements and  
+walk the Dom elements
+and then 
+parse them out of the string attributes at runtime which is not terribly performant
+and was really expensive for creation that's where a lot of the perspective came from that was that 
+ sure obviously signals are fast update because it's an event that's just honed in on where the
+change is so you're just some say change this area the 
+Dom updates that part was always obvious but
+there's this thinking that was setting up all these 
+subscriptions initially was really expensive and that was compacted by like
+the actual process and you see this still in petite view where those V1 was this too
+weird  we were literally crawling through 
+Dom nodes to figure out
+what we were doing when we moved to 
+compilation which a lot of Frameworks
+did too whether it's 
+just in time
+ahead of time this this element completely kind of
+dropped away and I think it got even more emphasized more recently
+when the browser started rewarding us for
+ creating lots of elements at the same time big one that I think of 
+this has always been kind of faster
+ but 
+template cloning is
+faster than creating the elements one by one generally uses less memory  
+you can just defer at that
+point to the underlying like a sea level or whatever 
+just clone these nodes rather than go through a loop or go through some like
+process and so the thing is this really lends nicely to these you
+know fine-grained reactive kind of patterns because a 
+virtual Dom
+ the idea is you create the structure every time you need diff it so you can do some
+smart memoization 
+not to create the whole structure but generally speaking that's the process you're just creating
+the structure the thing is with 
+reactivity it's a set once mentality which meant that
+ we don't have that same constraint that the updating the Creator the same thing 
+they are separate things so it's a lot easier to kind of go
+and look at this template I mean the 
+template can be a DSL  felt whatever it could even be jsx like
+it's always pretty easy with something that's HTML to see these are the 
+static parts and these are
+the 
+dynamic parts and then you just 
+separate that to the point that the way solid works is we
+actually just look at the 
+jsx and turn it into 
+almost lit HTML style templates we 
+don't run rerun the templates
+but we take the HTML template out of it and then we 
+clone it and then
+the only piece that we need to know is where to put those 
+effects in to update the Dom and the compiler can
+go  
+it's two elements down and one element over and then we just 
+output the most optimal walk we 
+don't
+even use query selectors or anything to find the elements we can literally just go 
+clone this element 
+walk here do
+this it's about as efficient as you're going to get for 
+creation because you've 
+run that once only
+initially the Dom takes a heavy lifting of the element creation and then we just have to set up a few things
+and what's cool about this too 
+if we're getting even further is that
+like 
+server side rendering and 
+hydration  have the 
+same split because the 
+HTML
+the Dom already exists so the 
+difference between 
+hydrating in something solid and 
+rendering
+is actually very very little because the key part is 
+instead of cloning those nodes and walking and attaching
+the stuff we just go oh the stuff's already there and then just walk and attach it so we just skip the Clone node and you basically have the same code for
+hydration and for rendering and this just comes because of because of
+the split right   the other thing that that calls out that I think is really
+interesting is I don't know if you remember this but there's a time right 
+after jsx and react came out and
+
+there's one Camp 
+these templates this jsx
+stuff isn't really statically analyzable and it's in its entirety 
+I mean it is but it's not right you there's
+there's edge cases and Corner cases and not so Corner cases where it just 
+you can't statically analyze it and then
+like we're now at a point where everything's come right back to where because there's 
+a whole Camp 
+then it was you don't need statically
+analyzable templates for anything that's crazy town and then we're right back now
+to where it's well maybe there's some something to this whole statically analyzable template thing because it
+makes things an awful lot faster and  not just the whole server side
+thing but not optimizing the output for the front end and being able
+to be oh so if I'm doing 
+server side rendering then I can do some fancy 
+hydration or 
+resumability or whatever
+you want to  do from statically analyzing the templates you actually have so full circle and it is like
+it is completely I this is why I didn't want jsx in the browser FYI know they was falling around for a bit but I was
+like no no I actually just loved the fact that there was a agreed upon syntax that all the tooling had that I
+could use and don't don't give it a specific meaning because a perfect
+example that's mostly reactive libraries vue swfelt  solid quik
+ we do actually compile differently for server and client 
+on the client you're making Dom nodes but 
+on the server we we make strings and
+the amount of an analyzability for the word of jsx
+ has never really been a constraint for me on the client side 
+because it's not where you're like
+we need to memoize Loops we need to do smart stuff around reactivity in terms of this is why most
+reactive libraries have control flow V if and   handlebar stuffs it's all we actually
+used is playing components we're just hiding the runtime function call in plain sight
+ but so it's not a compiler trick but there's there's still something there
+ I've actually found the biggest limitation of jsx is actually on the server side rendering thing which is funny
+ but that's because there's not all that other stuff so when it comes down to performance on the server it's
+literally how fast you can Mash strings together and  something as silly as being able to use a for Loop and pushing
+versus mapping makes this more significant impact on it so that's
+the one place where I've come to be  
+server-side templating language is actually the analysis actually makes
+a bigger deal but  I just want to kind of point out that  we're definitely
+leveraging it and any I think that's the thing with the jsx it's funny I remember when 
+react
+introduced the new jsx transform and there was ergonomic reasons for it and stuff but it also improved the way
+like the performance a little bit too and I feel with 
+jsx anyone who
+actually wants to go there is doing analysis on it that was that was inferno's big push when they first showed it hey
+ Inferno came out shortly a year or two before solid did and it showed up how fast you can make a
+virtual Dom and part of that was that they compiled their jsx differently and I think this is going to be as I
+said it's a very common Trend now that basically at least on the templating side everyone's kind of bought into that
+maybe maybe not react but I think it might come around on the other side when we
+actually look at the language side which  felt does with the  $s and like
+things react forget  the compiler and when we start getting there we might actually revisit the
+templating so I don't react as well I think the thing is these
+we haven't gotten here yet on this conversation but talking about The Primitives of reactivity they're they're
+a little bit more complicated from an implementation standpoint but they are how should I put it like
+it's because they're trying to overcome a limit of the language that you have a script is the way is the way that I
+put it we're trying to force I don't know if I'm 100 correct because I'm
+always confused when someone says FRP and I  because 
+FRP isn't isn't RX  but it is you
+know that whole thing we're trying to force something along that classic sense of reactivity into
+JavaScript where it doesn't exist and what you're seeing with these compilers at the language level is
+that they actually are consolidating on on a language perspective the concept of some kind of reactive
+atom State some kind of 
+side effect and some kind of 
+derived State and  whether it's 
+use State use memo use a
+fact or create signal create memo whatever if you look at every reactive Library over time view what is it like
+ref computed watch effect those three language Primitives exist and the
+difference between say those and something hooks is react also has all the other hooks to tell you how to memorize memorize the system which is
+funny I don't count use memo in that but I mean react.emo use callback all of those kind of things so they have the
+same language and then plus something and their compiler is basically getting rid of the plus something to the point
+that everyone's just using these 
+three kind of concepts of how the 
+Express State
+fullness and intention in the code and that to me that's the power of this
+this kind of signal type mindset is that that language primitive not so much on
+like how simple it is to implement in JavaScript but the idea that there's a language there's some kind of
+language here maybe a shared language which and it's interesting watching
+all the Frameworks lean really heavy into compiler to kind
+of try and shift the semantics of JavaScript to align with that   
+on the Primitive
+front there in the language of reactivity so if
+you say that in around me especially if there's a bunch of people that are RX people they're oh  
+the language cat map and stuff I be dead Frank with people I think that the 
+operators in
+rxgs are the worst thing that ever happened to observables period observables are so 
+
+if you have this
+primitive type and I mean it's primitive it's basically a function that's a certain shape and it gives you some
+really nice guarantees around here's what happens when you subscribe and here's if you can't next step when
+and after you complete and by the way this tear down is always going to happen no matter how things end those
+things that has some value and I think that people  if it were in the
+platform people you and other people would use it because it's this free thing that's cheap and small and
+easy and  what's happened is over the last I
+has been around longer than me so whatever 16 years or something
+ it's people have used it to commit atrocities people have used it to
+ as a state management thing people have used it for what it's actually good at which is 
+coordinating events and  it's not that it's bad at State Management there's just things that it does the glitching thing
+that  your how do I put this 
+anyone that's using rxjs to do pure
+State Management at the end of the day they're trying to invent their own
+signals framework sort of because it's more it's the same thing as oh I decided to roll my own
+ Dom implementation stuff and at the end of the day if that goes on long enough I'm going to 
+invent a framework
+like there's no way around it and I think that when someone's oh  what I'm gonna build my own
+Redux slash  thing with observables
+and they'll hit edge cases and they'll adapt to them and they'll hit edge cases and they'll adapt to them and inevitably
+they're going to end up on one of these types that you're talking about and they're going to build it organically and there'll be yet another thing that's
+undocumented and their whole team will hate them or whatever but  it's still so like
+you're the absolute pure primitive of  this is 
+observable it's the Duel of iterator  great
+that should probably exist and then built off of that you have things like
+ notification channels for more advanced types whether or not it's a 
+signal or a 
+BehaviorSubject or an 
+atom
+or  whatever I think I my gut tells me that um
+any atom that is a BehaviorSubject it solves a lot of problems it 
+doesn't solve the glitching thing right because
+it's very still very much 
+push-based it also doesn't solve this thing that signals do and that  I
+think that the angle that they're going out with the 
+Amber team where they had their own sort of signals thing was  there and 
+Amber they had I don't
+know if you're familiar with them but there they had 
+explicit dependencies you had to be  this 
+computation depends on
+these things instead of an implicit thing a lot of modern ones do now and um
+like but the idea was well 
+I don't want to do the work unless I have to sort of thing so just kind of save if
+all your computer properties cache their computed thing unless they were dirty or whatever and then  you only
+recomputed it when you actually pulled it sort of thing then all of a sudden you're you're doing less work and
+and 
+observable is never going to do that 
+if you have a map in there even if you've bounced it after if you debounce
+it after the map it's always going to call that map and you're doing useless work at that point so and people trip
+all over that all the time I see it so end of the day I think that 
+I do think that my type that I'm a CEO of apparently is is much more primitive
+but I also think because it's more primitive it's people try to
+leverage it to do things and ultimately what they would arrive at would be something 
+signals when they were
+doing it but they're not do signals replace observables for some use cases sure but probably they just they
+should probably be using observables or something it under the hood for at least the notification side and then
+  do start do observables are observables going to replace signals
+for certain things no not really but  if you're doing if you're doing 
+coordination between two websockets or
+like web sockets and mouse movements and you're using signals that's be pretty pretty strange would be a lot of weird
+work to be doing to to manage that 
+observables are probably a better choice there like
+I don't know they did the whole thing though is 
+
+I'm trying to 
+separate 
+observable
+from 
+operators in rxjs as much as possible
+
+my dream would be that
+observable type 
+I'm no longer the sole Arbiter of the most popular version of observable and 
+it's just exists in
+platforms and 
+rxjs is just a bunch of utility things and 
+then it goes that we have 
+Lodash
+ where you don't have to
+maintain it anymore it's just oh  there's these things and slowly but surely everyone else 
+either adds it
+to a platform or gets re-implemented in whatever framework you're using and you don't need any of this stuff anymore and
+I take my piles and piles of Open Source money and  right off into the
+sunset on whatever horse that would buy which is probably a penny horse from Myers 
+
+that's interesting
+ because I was very aware of the 
+observable spec or  the 
+tc39
+proposal around the time I was beginning my work in 
+solid
+ I was aware of objects that observe as well
+but I was I was looking for those Primitives to use to build 
+solid on
+and my earliest versions had symbol observable on the signals and
+and stuff that and it's funny even at certain points even when I moved to more streamlined for our purpose
+type setup I actually had an experiment where I was I built RX type operators on top
+of signals which is it is fighting the grain a little bit like I was
+doing it at a certain point and then I was just I just why would I do that I had a 
+pipe or compose 
+setup and then I was chaining all of these and then I'd write the same code for obviously simple
+cases there's there's all the fact that 
+RX you can be retry like
+that is incredible right from 
+if signals don't really have a sense of time so there's no there's
+nothing there for them so I was writing this any kind of more simple case and this being why
+am I doing this and it was a good exercise for me personally though because I needed to reaffirm for myself
+like where those boundaries were or where these things sit because it was very obvious to me that
+ observables did something quite well 
+the thing about the spec that always or the proposal that always kind of
+confused me a bit I guess this is where you're coming from that perspective was I was  now that I have the
+subservable what do I do with it and I'm dude is my first step to implement the there's 
+a lot of operators in
+RX and I know they've been streamlined over time but I feel there's probably a 
+subset of 15 or so that
+like literally everyone always needs or uses if that   
+I was a big fan
+of 
+Andre Staltz  
+cycle.js's work and  he kept
+on trying to play with 
+can I come up with a minimal subset that I need for my UI library right I thought
+extreme was very interesting in that  he shows like a hot by default kind of  approach to to
+things that are observable and just kind of recognizing where the different use cases
+ fit in  and but then he also went down that well what if we standardize the approach thing 
+you I'm sure you've looked at call bags and that whole thing and  then I
+was wow this is the coolest thing I've seen from a like my mind conceptual place that I could like
+have 
+one primitive and just by the way I hold it I can completely go between 
+iterator promise observable the
+whole thing but then I was like no one's actually going to use this no no offense to me it was just
+like it's just like it's looking at I don't know
+like compile code and binary and then going  I write this because 
+if I switch this one
+and zero now the meaning completely changes between that communication
+ but it is interesting because we all can sense that there's some kind of 
+Base
+primitive some kind of need something that 
+JavaScript doesn't have that could give value to everyone but then there's
+I understand a bit more now
+Dominic Gannaway
+ creator of
+Inferno
+ just joined the Svelte team actually this past week
+ he was working on his own kind of experimental compiler thing
+ he wanted it to look react forget but compiled solid that was the gist of it 
+instead of
+like a memorizing compiler it was a reactivity compiler but you wrote react when he was working through
+ his whole process of doing this he also went to the browser people and was
+like I wanted it really cool if we could just have a atomic getter forget about all the other like
+subscription and all that stuff I just want to have a variable that I can track when someone reads it right like
+the same way you do with a proxy  and the responsible almost immediately 
+Brendan Eich
+ showed up in the
+thread and was 
+javascript's not a data flow language
+ that was the end of the
+conversation almost he's like he's I'm not  obviously he's not I don't think he's like
+like chairing it anymore but he's got enough  there's a group there and they probably carry that
+sentiment maybe that's why in a certain way with these proposals maybe it's because we can't agree on anything but why
+we haven't actually managed to get to a point where we can just have some little primitive for this  I don't
+know 
+
+my view of observable it's almost we just need a
+subscribable contract 
+if everyone knew that if you implemented
+subscribe it worked with everything else venables do or whatever right
+  there's a lot of value in that there's a lot of
+value in 
+observable as far as the whole guaranteed tear down all that stuff but that stuff I feel
+like it's stuff people that are implementers would use right that's not something that I mean the
+implementers would certainly use that more than they use 
+generators or async generators for co-routines so here's
+some fun facts about rxjs the initial attempt to implement rxjs when I
+under my watch was using generators and co-routines instead of Observers and
+there were edge cases around it where it just simply would not work and it was super not performant there's a lot
+of reasons that we moved away from that I also at one point had a whole Spike
+where all of rxjs was implemented with callbacks under the hood but with the same API so we didn't
+break other people but under the hood it was call bags it was it the attempt there was to
+get things smaller 
+I ended up getting things much much smaller by just refactoring our existing code by moving
+things around piece by piece and eventually everything's a lot smaller but 
+so that exists here the ergonomics there were that is another thing that only
+implementers should probably be using I would not give that to end users and be here's an API for you to use you
+know Junior developer that wants to just make a button blue that's
+probably not the best thing in the world just the same as generators so it irritates me to no end the
+arbitrariness of these committees when they're someone will chime in and be 
+we're not a data flow
+language it's you don't even know what language you are you added co-routines to this that no one will
+ever use and that's just one example of of silly things that I've been
+looking for 
+a use case for async generators for a couple years now I think I might have found one that
+pertains I've been looking at it what I and the funny thing is even if I have this ability I don't
+actually want the end user to write that code so it's what if we could use this combined
+with something async local storage to do server side rendering suspense kind of things that's the
+one place that I was thinking I was this is this that ability to pull and wait and merge
+everything down to string in the end it's probably slower 
+but I think the model would be good but then
+on the on the flip side I don't want the end user actually writing that code 
+
+I'd rather them just write an async component than actually write that code
+but I think I finally found a place that I was  with streaming and that I could use async
+generators as a compilation Target for it's like suspenseful
+streaming server side rendering I think it's the only place that I've found a use for it yet  I mean maybe you
+could make a a service server-side message bus that was implemented with async co-routines like
+I just don't know I just can't really fathom a great use case for it why did why is this in
+everyone's copy of chromi right now is that was that super important for us to add I don't know a
+tooling stack somewhere right in a big coat that is using it heavily oh 
+maybe probably that's all I can think because I mean the truth be told
+like I'm so observable just as a case in point or or signals there's multiple
+copies of both of those things and everybody's deployed app everybody that's deployed an app written with
+anybody's framework has a different signal there's probably some third-party library that they pulled in that also
+has signals and  of some sort of signal some sort of observable they're definitely some sort of
+observable in all of that stuff our graphql clients are the perfect example I've seen a ton of observable
+ implementations inside those graphql libraries and you might also have one
+in your applications so instantly you have two right there  react router has one built in there's I
+mean of course view has viewings felt have small observables built into it mobx has a tiny observable
+implementation that's part of their signal implementation they're just there's all this and I just look at
+it I'm come on so billions and billions and billions of
+bytes downloaded to to push this same-shaped thing over and over
+again it's not my vanity that I want this added to the platform if
+anything they add this to the platform people are just gonna forget who I am I don't have anything else to do other than rxjs stuff and  the
+sign of success right   I mean I'm  with that it's just that
+it's it just is it's super silly to me that the Proposal stagnated
+forever ago that no one is sponsoring it and yet we have async co-routines we can we can build async Co
+routines today in Native JavaScript and
+  it's so I wanted to steal in
+because we have both of you discussing signals and observables and their primitive State and as library and
+Tool Library authors and Tool Builders right this is really relevant to you but Ben you've already talked about what happened when the general public well
+let's just say you did a little too good job of selling the promise of observables and people found the operators and decided that all code
+should be in observable form and you maybe have seen angular projects that are that where there is no non-rxjs
+code in the UI piece I feel people have heard a lot of conversation a while ago about like
+proxies and now they're hearing a lot about signals and  conversations
+are happening on teams where people are trying to find nails to swing these hammers at can you both go on the
+record here as to why developer just average developer teams that aren't building libraries they're building apps
+like  they get that everybody's so hype about this they get that it's going to make all their Frameworks better and maybe make the developer experience
+better but is this a pattern they just need to know is being put into their tools is or is this something that
+they should actually be getting very excited about and thinking you should know how to use this pattern you should know how to apply this pattern
+that kind of thing if your tools are already working don't touch them if
+you're already working don't convert to signals or observables or anything else like
+they're working don't be silly but  I mean I think people need to know their
+Primitives and understand them and how they work I think so I will say this I think
+that signals are have some Superior aspects in that they are more limited in
+what they can do you're not like it's if I hand you an entire tray
+of surgical instrument instruments you could cut yourself or leave something in an open wound or whatever
+it's not great but if if all I give you is some string and a stapler there's a limited amount
+of damage you could do with those two things so I don't know it's
+that's my two cents I don't know what Ryan thinks  I mean I agree with that I think actually in those
+limitations for that used case it makes it makes it more adoptable in
+like where you're gonna find it I think you asked if people should get excited I mean people are excited about react hooks right and I feel
+it's that level you need to know the tools you're using so to speak
+ you don't have to go chase them they will probably come to  you you will find these things in your
+Frameworks and then you can use them appropriately you do need to know about them  they do have
+properties this signals do work a certain way that it's say different than Hooks and different than a plain
+JavaScript object so I think awareness is important I think the patterns you get to use it's it is nice sometimes
+when you can kind of just wire up this logic and anyone's who's used RX  and had that moment knows what that
+is as well where you can just put the pieces there and then it you set it up and you did the work of Designing it essentially or just like
+laying it out and then it just it just kind of works because you've wired everything together that's the I think that that always kind of feels nice
+about these patterns because in both cases the change pushes Through The Primitives rather than like
+ and when I say push I also mean pull but it it lives in there it's
+not it's a different game than say when you have components that we render over and over again and then you're like
+what is the closure over this or how does that work it definitely feels good that you're I wrote this thing
+this is a its own unit of update I can see it changes it is the thing so
+I think I think it's fun to work with I think it has its applications
+ I think it does  in the same way hooks does kind of adjust your
+approach to how you  author your components or look at your your
+front-end code but I  obviously I'm a big fan so  I think it's a good
+thing and  we're gonna continue learning
+ through this process of  where these things get because of the limitations of signals like in terms of what the use cases are it's
+really nice is they kind of just sit there at a certain layer that's  a little bit over  now
+basically with signals in jsx or your templating language all kind of being together it's just this little
+declarative piece that kind of sits over HTML as its declarative piece you just kind of raise the floor a bit
+on what that declarative  in environment is and then
+you still have all the control and freedom to just kind of plug in all your other stuff on top of that and do
+that that's kind of what we're doing we're kind of just  expanding out the ground
+around the way we build uis under the hood a bit I feel bad we
+didn't really talk about hooks I will say that honest honest direct straight opinion is that signals a
+combination of single signals and in cases where you need the certain event composition observables those two
+things working together even in a react attack is so much better than hooks hooks are they're
+disjointed push-based reactivity that is caused by a render cycle to me it's
+just a super weird mechanism that people abuse they'll have this react component there's  25 hooks
+called at the top and they all depend on each other and you can't really look and be oh here's how
+the data flow is going through this thing it's just I don't know magic but   it's interesting I think
+there's always going to be that there's a weird perceptions thing because you call that magic signals have
+been called Magic  and people defended where hooks aren't magic but like
+like we we are both very much kind of messing with the semantics of
+JavaScript and the expectation   you run you run a function multiple times and the state persists
+in that function somehow that's magic  so  I think I think this
+is just another one of those patterns and people are gonna see what makes the most sense to them I know where I
+stand well I know we'll probably have to wrap it up there I will say that I know
+the angular team gave you a lot of credit Ryan for a sounds exhaustive conversations as they approach their
+prototype version of signals so you're doing the Lord's work because I think from from  just the mainline
+developers perspective the closer the semantics and the and the underlying implementations and the feel the
+ergonomics of this is as you go from framework to framework I mean it's going to make certainly our lives a lot
+simpler when  it's  if they're magic but it's sometimes troubling when they're differently magic
+in every framework and so I love the amount of collaboration that's
+happening with all these framework authors and Library authors in the in this version especially on this concept of signals so
+ I've been so stoked and they've been so open to it I've been talking to Powell especially for three-ish
+years I'm very impressed with the amount of consideration they've given this and
+how they've exhausted through a whole bunch of different options to kind of land where they have and I'm very
+excited to see where this goes for angular angular is a big Community lots of projects countless and to
+see this kind of shift and it will take time it's not you just rip up your angle code this is just you
+know a angular for the future a mod a modernization I'm very excited to see where that goes
+ well that's going to be it for us today thank you everybody for listening to this modern web podcast thank you of
+course to our guests Ryan and Ben we to say the conversation is not stop here you can find Ryan on Twitter at
+Ryan carnado that's r-y-a-n-c-a-r-n-i-a-t-o you can find Ben
+online at Ben Lesh that's b-e-n-l-e-s-h and you can find me online at robocell as for the podcast you can
+find us online at 
+moderndotweb.com or on Twitter at modern.web

@@ -1,0 +1,73 @@
+Ady Ngom
+ngconf
+https://github.com/adyngom/angular-signals
+
+
+Duncan Faulkner
+https://medium.com/ngconf/angular-signals-cd2010bacb3e
+https://stackblitz.com/fork/angular-cz3xvh?file=src%2Fapp%2Fcomponents%2Fpod.component.ts
+
+
+
+short books on Angular Material
+https://anglebrackets.gumroad.com/
+
+
+
+Alfredo Perez
+https://medium.com/ngconf/handling-user-actions-with-signals-in-angular-ff40bb63e857
+https://github.com/alfredoperez/ng-demos/blob/main/libs/demos/src/lib/demos/ngrx-with-signals/ngrx-with-signals.component.ts#LL53C15-L53C15
+
+
+Quantarius Ray
+https://medium.com/ngconf/facading-your-signals-c078215d9087
+https://github.com/QuantariusRay/todo-list
+
+
+Federico Monaldi
+https://medium.com/@federico.monaldi/angular-signals-implementation-ab64e02fa3c3
+
+
+
+
+input transforms feature
+https://itnext.io/how-to-enjoy-signal-based-input-right-now-56efecaeee98
+
+
+
+Zoaib Khan
+https://www.youtube.com/watch?v=ObMmqJCF8ME
+https://github.com/thisiszoaib/angular-signals-crud
+
+
+https://www.youtube.com/watch?v=xwmS1A2uBR4
+https://github.com/anuroopjoy/signal-learn
+
+
+
+Angular Signals mental model | Enea Jahollari | Angular Tiny Conf 2023
+https://www.youtube.com/watch?v=Uz1vtre1cd0
+https://docs.google.com/presentation/d/1bcvdGP2fik6RBAtt-rxzUyM7lQPUOqxD8tuJBrodJ4Y/edit#slide=id.g2396313eba3_0_276
+https://stackblitz.com/edit/angular-x6sv8c?file=src%2Fmain-compiled-zone.ts
+
+
+https://www.youtube.com/watch?v=wq4ZlpEg5jw
+https://github.com/monsterlessonsacademy/monsterlessonsacademy/tree/350-todo-app-with-angular-signals
+
+
+Mike Pearson
+https://github.com/mfp22
+https://dev.to/mfp22/signals-make-angular-much-easier-3k9
+https://dev.to/mfp22/rxjs-can-save-your-codebase-49fi
+
+Synchronous reactivity means the thing that's reacting is reacting immediately.
+
+name = signal('Bob');
+yelledName = computed(() => this.name().toUpperCase()); // Immediately updates
+_ = this.name.set('Bilbo');
+
+Asynchronous reactivity means there's some kind of delay before the reaction:
+
+name = signal('Bob');
+yelledName = debounceTime(this.name, 1000)(); // Updates after name stops changing for 1 second
+_ = this.name.set('Bilbo');

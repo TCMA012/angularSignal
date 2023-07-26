@@ -136,6 +136,9 @@ OZ
 https://itnext.io/angular-signals-timing-a875659c5a1a
 https://stackblitz.com/edit/angular-signals-timing?devToolsHeight=33&file=src/main.ts
 
+https://medium.com/@eugeniyoz/application-state-management-with-angular-signals-b9c8b3a3afd7
+https://github.com/e-oz/state-mgmt-signals-example
+
 
 
 https://ng-journal.com/blog/2023-04-25-signals-and-the-rxjs-interop/
@@ -208,5 +211,6 @@ https://medium.com/@gauravmukherjee/can-signal-replace-rxjs-in-angular-954d8ba46
 
 https://www.youtube.com/watch?v=Uz1vtre1cd0
 
-
+https://dev.to/viniciusschuelter/angular-primitives-extending-the-power-of-angular-signals-h4o
+https://github.com/angular-primitives/angular-primitives
 
