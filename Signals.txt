@@ -3,7 +3,10 @@ Angular Signal
 https://angular.io/guide/signals
 https://next.angular.io/guide/signals
 https://github.com/angular/angular/discussions/49685
+
 https://github.com/angular/angular/discussions/49682
+Sub-RFC 3: Signal-based Components #49682
+
 https://github.com/angular/angular/discussions/categories/rfcs
 https://github.com/angular/angular/discussions/49090
 https://github.com/angular/angular/pull/49091
@@ -139,6 +142,9 @@ https://stackblitz.com/edit/angular-signals-timing?devToolsHeight=33&file=src/ma
 https://medium.com/@eugeniyoz/application-state-management-with-angular-signals-b9c8b3a3afd7
 https://github.com/e-oz/state-mgmt-signals-example
 
+https://medium.com/@eugeniyoz/dependency-graph-in-angular-signals-53ee47f75e21
+
+
 
 
 https://ng-journal.com/blog/2023-04-25-signals-and-the-rxjs-interop/
@@ -213,4 +219,6 @@ https://www.youtube.com/watch?v=Uz1vtre1cd0
 
 https://dev.to/viniciusschuelter/angular-primitives-extending-the-power-of-angular-signals-h4o
 https://github.com/angular-primitives/angular-primitives
+
+
 
