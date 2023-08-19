@@ -71,3 +71,24 @@ Asynchronous reactivity means there's some kind of delay before the reaction:
 name = signal('Bob');
 yelledName = debounceTime(this.name, 1000)(); // Updates after name stops changing for 1 second
 _ = this.name.set('Bilbo');
+
+
+
+Enea Jahollari
+https://itnext.io/a-sweet-spot-between-signals-and-observables-a3c9620768f1
+
+ok
+https://gist.github.com/eneajaho/53c0eca983c1800c4df9a5517bdb07a3#file-computedfrom-ts
+
+best
+https://gist.github.com/eneajaho/33a30bcf217c28b89c95517c07b94266#file-computed-from-ts
+
+https://github.com/rx-angular/rx-angular/issues/1598
+https://github.com/rx-angular/rx-angular/issues/1594
+
+https://push-based.io/workshop/modern-angular
+https://github.com/push-based
+
+
+
+
