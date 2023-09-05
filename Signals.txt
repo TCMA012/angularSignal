@@ -58,6 +58,8 @@ Conduit is a social blogging site (i.e. a Medium.com clone)
 
 
 Joshua Morony
+observables are great for managing events
+signals are great for managing state
 I refactored one of my existing Angular applications that relied heavily on RxJS and observables, to signals.
 https://www.youtube.com/watch?v=p2RJ7xXIRII
 Source code (signals): https://github.com/joshuamorony/quicklist-signals
@@ -143,6 +145,7 @@ https://medium.com/@eugeniyoz/application-state-management-with-angular-signals-
 https://github.com/e-oz/state-mgmt-signals-example
 
 https://medium.com/@eugeniyoz/dependency-graph-in-angular-signals-53ee47f75e21
+https://medium.com/@eugeniyoz/angular-signals-keeping-the-reactivity-train-c22511e72f5e
 
 
 
@@ -220,5 +223,20 @@ https://www.youtube.com/watch?v=Uz1vtre1cd0
 https://dev.to/viniciusschuelter/angular-primitives-extending-the-power-of-angular-signals-h4o
 https://github.com/angular-primitives/angular-primitives
 
+
+
+Signals for a value change. Like a box where you read and write values for a variable.
+
+Observables for a value that change over time. Like a stream of data.
+
+
+Signals for a value change. Like a box where you read and write values for a variable.
+
+Observables for a value that change over time. Like a stream of data.
+
+
+Signals for a value change. Like a box where you read and write values for a variable.
+
+Observables for a value that change over time. Like a stream of data.
 
 
