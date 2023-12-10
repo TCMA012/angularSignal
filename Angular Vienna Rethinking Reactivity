@@ -1,0 +1,8 @@
+Angular Vienna Rethinking Reactivity
+Alex Rickabaugh, Angular Core lead, spoke at the ngGlühwein in Vienna. He presented a Plan v2 for the Signals. Initially, the plan was to come out with Signal components very quickly, actually already in Angular 17.
+
+The Angular team realised that it might be a too huge step, especially if an Angular application comes with a lot of libraries that also have to be migrated.
+
+So, the updated plan includes smaller steps. We might already get Angular 17 Signal-based inputs for the normal component; after that comes the possibility of a partial zoneless component with OnPush Change Detection strategy. Then, Signal Components and then finally, the long-awaited and high-performant Signal Change Detection.
+
+https://docs.google.com/presentation/d/1oc5dO40VANfkmYMFtyz6rstrJdHqV6nOwJluMjIcCkQ/edit#slide=id.g1e556043fbc_0_0

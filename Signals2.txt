@@ -38,6 +38,12 @@ https://itnext.io/how-to-enjoy-signal-based-input-right-now-56efecaeee98
 Zoaib Khan
 https://www.youtube.com/watch?v=ObMmqJCF8ME
 https://github.com/thisiszoaib/angular-signals-crud
+Contact {
+  name: string;
+  phone: string;
+  email: string;
+}
+
 
 
 https://www.youtube.com/watch?v=xwmS1A2uBR4
@@ -63,7 +69,7 @@ https://dev.to/mfp22/rxjs-can-save-your-codebase-49fi
 Synchronous reactivity means the thing that's reacting is reacting immediately.
 
 name = signal('Bob');
-yelledName = computed(() => this.name().toUpperCase()); // Immediately updates
+yelledName = computed(() => this.name().toUpperCase()); Immediately updates
 _ = this.name.set('Bilbo');
 
 Asynchronous reactivity means there's some kind of delay before the reaction:
@@ -91,4 +97,9 @@ https://github.com/push-based
 
 
 
+https://christianlydemann.com/the-best-way-to-use-signals-in-angular-apps/
+https://github.com/lydemann/signals-todo
 
+
+https://blog.flotes.app/posts/angular-fine-grain-reactivity
+https://github.com/Everduin94/signal-workshop/tree/main/src/app/fine-grain
